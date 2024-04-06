@@ -10,6 +10,8 @@
 # ======================================================== #
 import requests
 
+from src.common.coordutils import CoordTransformer
+
 
 class GetLongitudeLatitude:
 
@@ -50,5 +52,12 @@ class GetLongitudeLatitude:
         }
         response = requests.get(url=self.url, params=params)
         res = response.json()
-        self.longtitude = res['result']['location']['lng']
-        self.latitude = res['result']['location']['lat']
+
+        # ------ 从返回的json文件中获得经纬度坐标 ------ #
+        longtitude = res['result']['location']['lng']
+        latitude = res['result']['location']['lat']
+
+        # ------ 使用坐标转换工具转换为真正的经纬度坐标 ------ #
+        utils = CoordTransformer(longtitude, latitude)
+        self.longtitude = utils.res_lng
+        self.latitude = utils.res_lat
