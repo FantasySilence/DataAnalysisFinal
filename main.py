@@ -14,6 +14,7 @@ ROOTPATH = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(ROOTPATH)
 
 # 测试完整流程，爬取，解析，存储，读取，可视化
+from src.common.const import CONST_TABLE
 from src.common.filesio import FilesIO
 from src.common.randomIPandHeaders import RandomRequestInfoGenerator
 from src.modules.datacrawler import HousingDataScrape
@@ -31,7 +32,13 @@ CD_data.plot(
     c="unitPrice", cmap=plt.get_cmap("jet"), colorbar=True,
     sharex=False, ax=ax
 )
+ax.plot(
+    CONST_TABLE["CITY_CENTER"]["CD"]["LNG"],
+    CONST_TABLE["CITY_CENTER"]["CD"]["LAT"],
+    "r*", markersize=10, label="city center"
+)
 ax.set_title("CD Housing Price Distribution")
 ax.set_xlabel("longitude")
 ax.set_ylabel("latitude")
+ax.legend(loc="upper right")
 plt.show()
