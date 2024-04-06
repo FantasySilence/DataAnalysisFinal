@@ -81,27 +81,3 @@ class CoordTransformer:
         mglat = gg_lat + dlat
         mglng = gg_lng + dlng
         return gg_lng * 2 - mglng, gg_lat * 2 - mglat
-
-
-if __name__ == "__main__":
-    
-    import pandas as pd
-    CD_data = pd.read_csv(
-        "D:/GitsProject/DataAnalysisFinal/resources/datasets/BJ_housing_data.csv",
-        encoding="utf-8"
-    )
-    lng = CD_data["longitude"].tolist()
-    lat = CD_data["latitude"].tolist()
-    lats, lngs = [], []
-    for i in range(len(lng)):
-        lnglats = CoordTransformer(lng[i], lat[i])
-        lats.append(lnglats.res_lat)
-        lngs.append(lnglats.res_lng)
-    CD_data["longitude"] = lngs
-    CD_data["latitude"] = lats
-    CD_data.to_csv(
-        "D:/GitsProject/DataAnalysisFinal/resources/datasets/BJ_housing_data.csv", 
-        encoding="utf-8"
-    )
-
-    
