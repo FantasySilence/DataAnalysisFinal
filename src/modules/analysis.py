@@ -156,8 +156,12 @@ class HousingDataExploratoryAnalysis:
         )
         axes[0, 0].xaxis.set_tick_params(labelsize=12)
         axes[0, 0].yaxis.set_tick_params(labelsize=12)
+        axes[0, 0].set_xlabel("朝向", fontsize=12)
+        axes[0, 0].set_ylabel("样本数", fontsize=12)
         axes[1, 0].xaxis.set_tick_params(labelsize=12)
         axes[1, 0].yaxis.set_tick_params(labelsize=12)
+        axes[1, 0].set_xlabel("朝向", fontsize=12)
+        axes[1, 0].set_ylabel("房价", fontsize=12)
 
         # ------ 房子房间数量(houseRoom) ------ #
         sns.countplot(
@@ -180,8 +184,12 @@ class HousingDataExploratoryAnalysis:
         )
         axes[0, 1].xaxis.set_tick_params(labelsize=12)
         axes[0, 1].yaxis.set_tick_params(labelsize=12)
+        axes[0, 1].set_xlabel("房间数量", fontsize=12)
+        axes[0, 1].set_ylabel("样本数", fontsize=12)
         axes[1, 1].xaxis.set_tick_params(labelsize=12)
         axes[1, 1].yaxis.set_tick_params(labelsize=12)
+        axes[1, 1].set_xlabel("房间数量", fontsize=12)
+        axes[1, 1].set_ylabel("房价", fontsize=12)
 
         # ------ 房子卧室数量(houseBedroom) ------ #
         sns.countplot(
@@ -197,9 +205,13 @@ class HousingDataExploratoryAnalysis:
         )
         axes[0, 2].xaxis.set_tick_params(labelsize=12)
         axes[0, 2].yaxis.set_tick_params(labelsize=12)
+        axes[0, 2].set_xlabel("卧室数量", fontsize=12)
+        axes[0, 2].set_ylabel("样本数", fontsize=12)
         axes[1, 2].xaxis.set_tick_params(labelsize=12)
         axes[1, 2].yaxis.set_tick_params(labelsize=12)
-        
+        axes[1, 2].set_xlabel("卧室数量", fontsize=12)
+        axes[1, 2].set_ylabel("房价", fontsize=12)
+
         plt.tight_layout()
         if is_save:
             path = FiguresIO.getFigureSavePath(
