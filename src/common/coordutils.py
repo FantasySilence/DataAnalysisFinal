@@ -21,6 +21,8 @@ ECCENTRICITY_SQUARED = 0.00669342162296594323   # 偏心率平方
 class CoordTransformer:
 
     """
+    参考自GitHub上项目
+    https://github.com/wandergis/coordTransform_py
     将百度坐标系(BD-09)转换为火星坐标系(GCJ-02)，
     并从火星坐标系(GCJ-02)转换为WGS84坐标系
     """
