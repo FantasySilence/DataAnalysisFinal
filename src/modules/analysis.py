@@ -7,6 +7,7 @@
 # @Description:                                           #
 # This module is used for exploratory analysis of data    #
 # ======================================================= #
+import os
 import matplotlib
 import pandas as pd
 import seaborn as sns
@@ -17,6 +18,7 @@ matplotlib.rcParams['axes.unicode_minus'] = False
 
 from src.common.filesio import FilesIO
 from src.common.const import CONST_TABLE
+from src.common.figuresio import FiguresIO
 
 
 class HousingDataExploratoryAnalysis:
@@ -33,6 +35,16 @@ class HousingDataExploratoryAnalysis:
         
         self.city = city
 
+        # ------ 创建存放图片的文件夹 ------ #
+        self.folder_name = city + "_figures"
+        data_folder = os.path.join(
+            FiguresIO.getFigureSavePath(), self.folder_name
+        )
+        if not os.path.exists(data_folder):
+            os.mkdir(data_folder)
+        else:
+            pass
+
         # ------ 尝试读取数据 ------ #
         try:
             self.data = pd.read_csv(FilesIO.getDataset(
@@ -42,7 +54,7 @@ class HousingDataExploratoryAnalysis:
             self.data = None
     
 
-    def draw_heatmap(self, is_show: bool=True) -> None:
+    def draw_heatmap(self, is_show: bool=True, is_save: bool=False) -> None:
 
         """
         绘制热力图
@@ -61,11 +73,17 @@ class HousingDataExploratoryAnalysis:
         plt.xticks(rotation=45, fontsize=12)
         plt.yticks(rotation=0, fontsize=12)
         plt.tight_layout()
+        if is_save:
+            path = FiguresIO.getFigureSavePath(
+                "%s/%s_Analysis_Heatmap.png" % 
+                (self.folder_name, self.city)
+            )
+            plt.savefig(path)
         if is_show:
             plt.show()
 
     
-    def draw_relativity(self, is_show: bool=True) -> None:
+    def draw_relativity(self, is_show: bool=True, is_save: bool=False) -> None:
 
         """
         绘制相关性图
@@ -88,11 +106,17 @@ class HousingDataExploratoryAnalysis:
             fontsize=14
         )
         plt.tight_layout()
+        if is_save:
+            path = FiguresIO.getFigureSavePath(
+                "%s/%s_Analysis_Relativity.png" % 
+                (self.folder_name, self.city)
+            )
+            plt.savefig(path)
         if is_show:
             plt.show()
     
 
-    def draw_category(self, is_show: bool=True) -> None:
+    def draw_category(self, is_show: bool=True, is_save: bool=False) -> None:
 
         """
         绘制分类变量
@@ -130,6 +154,10 @@ class HousingDataExploratoryAnalysis:
             "房子朝向——基于%s的数据"%CONST_TABLE["CITY"][self.city],
             fontsize=14
         )
+        axes[0, 0].xaxis.set_tick_params(labelsize=12)
+        axes[0, 0].yaxis.set_tick_params(labelsize=12)
+        axes[1, 0].xaxis.set_tick_params(labelsize=12)
+        axes[1, 0].yaxis.set_tick_params(labelsize=12)
 
         # ------ 房子房间数量(houseRoom) ------ #
         sns.countplot(
@@ -150,6 +178,10 @@ class HousingDataExploratoryAnalysis:
             "房间数量——基于%s的数据"%CONST_TABLE["CITY"][self.city],
             fontsize=14
         )
+        axes[0, 1].xaxis.set_tick_params(labelsize=12)
+        axes[0, 1].yaxis.set_tick_params(labelsize=12)
+        axes[1, 1].xaxis.set_tick_params(labelsize=12)
+        axes[1, 1].yaxis.set_tick_params(labelsize=12)
 
         # ------ 房子卧室数量(houseBedroom) ------ #
         sns.countplot(
@@ -163,12 +195,23 @@ class HousingDataExploratoryAnalysis:
             "卧室数量——基于%s的数据"%CONST_TABLE["CITY"][self.city],
             fontsize=14
         )
+        axes[0, 2].xaxis.set_tick_params(labelsize=12)
+        axes[0, 2].yaxis.set_tick_params(labelsize=12)
+        axes[1, 2].xaxis.set_tick_params(labelsize=12)
+        axes[1, 2].yaxis.set_tick_params(labelsize=12)
+        
         plt.tight_layout()
+        if is_save:
+            path = FiguresIO.getFigureSavePath(
+                "%s/%s_Analysis_CategoryVar.png" % 
+                (self.folder_name, self.city)
+            )
+            plt.savefig(path)
         if is_show:
             plt.show()
     
 
-    def draw_continuity(self, is_show: bool=True) -> None:
+    def draw_continuity(self, is_show: bool=True, is_save: bool=False) -> None:
 
         """
         绘制连续变量
@@ -188,6 +231,8 @@ class HousingDataExploratoryAnalysis:
             kde=True
         )
         axes[0, 0].set_title("经度(longitude)", fontsize=14)
+        axes[0, 0].xaxis.set_tick_params(labelsize=12)
+        axes[0, 0].yaxis.set_tick_params(labelsize=12)
 
         # ------ latitude ------ #
         sns.histplot(
@@ -195,6 +240,8 @@ class HousingDataExploratoryAnalysis:
             kde=True
         )
         axes[1, 0].set_title("纬度(latitude)", fontsize=14)
+        axes[1, 0].xaxis.set_tick_params(labelsize=12)
+        axes[1, 0].yaxis.set_tick_params(labelsize=12)
 
         # ------ unitPrice ------ #
         sns.histplot(
@@ -202,6 +249,8 @@ class HousingDataExploratoryAnalysis:
             kde=True
         )
         axes[0, 1].set_title("每平方米价格(unitPrice)", fontsize=14)
+        axes[0, 1].xaxis.set_tick_params(labelsize=12)
+        axes[0, 1].yaxis.set_tick_params(labelsize=12)
 
         # ------ housePrice ------ #
         sns.histplot(
@@ -209,6 +258,8 @@ class HousingDataExploratoryAnalysis:
             kde=True
         )
         axes[1, 1].set_title("总价(housePrice)", fontsize=14)
+        axes[1, 1].xaxis.set_tick_params(labelsize=12)
+        axes[1, 1].yaxis.set_tick_params(labelsize=12)
 
         # ------ houseArea ------ #
         sns.histplot(
@@ -216,6 +267,8 @@ class HousingDataExploratoryAnalysis:
             kde=True
         )
         axes[0, 2].set_title("房子面积(houseArea)", fontsize=14)
+        axes[0, 2].xaxis.set_tick_params(labelsize=12)
+        axes[0, 2].yaxis.set_tick_params(labelsize=12)
 
         # ------ houseAge ------ #
         sns.histplot(
@@ -223,8 +276,15 @@ class HousingDataExploratoryAnalysis:
             kde=True
         )
         axes[1, 2].set_title("房龄(houseAge)", fontsize=14)
+        axes[1, 2].xaxis.set_tick_params(labelsize=12)
+        axes[1, 2].yaxis.set_tick_params(labelsize=12)
 
         plt.tight_layout()
+        if is_save:
+            path = FiguresIO.getFigureSavePath(
+                "%s/%s_Analysis_ContinuousVar.png" % 
+                (self.folder_name, self.city)
+            )
+            plt.savefig(path)
         if is_show:
-            plt.savefig("a.png")
             plt.show()
