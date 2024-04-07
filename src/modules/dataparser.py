@@ -67,7 +67,10 @@ class HousingDataParse:
             )
 
             parser = etree.HTMLParser(encoding="utf-8")
-            tree = etree.parse(path, parser=parser)
+            try:
+                tree = etree.parse(path, parser=parser)
+            except:
+                pass
 
             # ------ 解析房价信息，并存储 ------ #
             house_price = tree.xpath(CONST_TABLE["XPATH"]["HOUSE_PRICE"])
