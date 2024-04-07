@@ -15,7 +15,6 @@ from lxml import etree
 
 from src.common.const import CONST_TABLE
 from src.common.filesio import FilesIO
-from src.common.randomIPandHeaders import RandomRequestInfoGenerator
 
 
 class HousingDataScrape:
@@ -25,7 +24,7 @@ class HousingDataScrape:
     """
 
     def __init__(
-        self, city: str, headers: dict, proxies: dict
+        self, city: str, headers: dict, proxies: dict, cookie: str=None
     ) -> None:
         
         """
@@ -36,6 +35,8 @@ class HousingDataScrape:
 
         self.city = city
         self.headers = headers
+        if cookie is not None:
+            self.headers["cookie"] = cookie
         self.proxies = proxies
         
         # ------ 创建存储数据的文件夹 ------ #
