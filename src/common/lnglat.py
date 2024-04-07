@@ -58,6 +58,5 @@ class GetLongitudeLatitude:
         latitude = res['result']['location']['lat']
 
         # ------ 使用坐标转换工具转换为真正的经纬度坐标 ------ #
-        utils = CoordTransformer(longtitude, latitude)
-        self.longtitude = utils.res_lng
-        self.latitude = utils.res_lat
+        self.longtitude = CoordTransformer(longtitude, latitude).res_lng
+        self.latitude = CoordTransformer(longtitude, latitude).res_lat
