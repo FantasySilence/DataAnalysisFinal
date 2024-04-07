@@ -91,11 +91,7 @@ class HousingDataScrape:
         for i in range(2, 51):
 
             # ------ 设置随机延时避免反爬 ------ #
-            time.sleep(random.randint(1, 3))
-
-            # ------ 爬取一定数量时更换请求头与代理IP ------ #
-            if i % 10 == 0:
-                self.proxies, self.headers = RandomRequestInfoGenerator.get()
+            time.sleep(random.randint(5, 10))
 
             # ------ 发送请求并设置编码 ------ #
             response = requests.get(
