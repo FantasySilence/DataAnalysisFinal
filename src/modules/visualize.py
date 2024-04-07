@@ -31,7 +31,6 @@ class HousingDataVisualize:
     def __init__(self, city: str) -> None:
 
         """
-        可视化模块v2
         city: 城市名称，例如北京市(city="BJ")
         """
         
@@ -66,7 +65,7 @@ class HousingDataVisualize:
         """
 
         if self.data is None:
-            print("ERROR: 没有该城市的数据集...")
+            print("ERROR: 地理分布图绘制失败, 没有该城市的数据集...")
             return
         _, ax = plt.subplots(figsize=(12, 8), dpi=100, facecolor="w")
         self.data.plot(
@@ -109,7 +108,7 @@ class HousingDataVisualize:
         """
 
         if self.data is None:
-            print("ERROR: 没有该城市的数据集...")
+            print("ERROR: 每平方米房价与面积关系图绘制失败, 没有该城市的数据集...")
             return
         _, ax = plt.subplots(nrows=1, ncols=2, figsize=(15, 7), 
                              dpi=100, facecolor="w")
@@ -162,7 +161,7 @@ class HousingDataVisualize:
         """
         
         if self.data is None:
-            print("ERROR: 没有该城市的数据集...")
+            print("ERROR: 房屋特征分布图绘制失败, 没有该城市的数据集...")
             return
         _, axes = plt.subplots(nrows=2, ncols=2, figsize=(16, 12), 
                                dpi=80, facecolor="w")
@@ -235,7 +234,7 @@ class HousingDataVisualize:
         """
 
         if self.data is None:
-            print("ERROR: 没有该城市的数据集...")
+            print("ERROR: 价格与房屋年龄的关系图绘制失败, 没有该城市的数据集...")
             return
         _, axes = plt.subplots(nrows=1, ncols=2, figsize=(15, 7), 
                                dpi=80, facecolor="w")

@@ -61,7 +61,7 @@ class HousingDataExploratoryAnalysis:
         """
 
         if self.data is None:
-            print("ERROR: 没有该城市的数据集...")
+            print("ERROR: 热力图绘制失败,没有该城市的数据集...")
             return
         data = self.data.drop(columns=["housePrice", "ID", "houseLoc"])
         _, ax = plt.subplots(figsize=(12, 8), dpi=80, facecolor="w")
@@ -90,7 +90,7 @@ class HousingDataExploratoryAnalysis:
         """
 
         if self.data is None:
-            print("ERROR: 没有该城市的数据集...")
+            print("ERROR: 相关性图绘制失败, 没有该城市的数据集...")
             return
         data = self.data.drop(columns=["ID", "houseLoc"])
         data = pd.get_dummies(data, drop_first=True, dtype=int)
@@ -123,7 +123,7 @@ class HousingDataExploratoryAnalysis:
         """
 
         if self.data is None:
-            print("ERROR: 没有该城市的数据集...")
+            print("ERROR: 分类变量探索绘制失败, 没有该城市的数据集...")
             return
         data = self.data.drop(columns=["ID", "houseLoc"])
         data["roomCategory"] = data["houseRoom"].apply(
@@ -230,7 +230,7 @@ class HousingDataExploratoryAnalysis:
         """
 
         if self.data is None:
-            print("ERROR: 没有该城市的数据集...")
+            print("ERROR: 连续变量探索绘制失败, 没有该城市的数据集...")
             return
         data = self.data.drop(columns=["ID", "houseLoc"])
         _, axes = plt.subplots(
