@@ -18,7 +18,7 @@ class FiguresIO:
     """
 
     @staticmethod
-    def getFigureSavePath(figname: str) -> str:
+    def getFigureSavePath(figname: str=None) -> str:
 
         """
         获取图片文件的保存路径用于图片的保存
@@ -33,5 +33,13 @@ class FiguresIO:
         # figures文件夹路径
         figures_path = os.path.join(root_path, "figures")
         # 目标文件路径
-        figure_path = os.path.join(figures_path, figname)
-        return figure_path
+        if figname is None:
+            figsave_path = os.path.join(figures_path)
+        else:
+            figsave_path = os.path.join(figures_path, figname)
+        return figsave_path
+
+if __name__ == "__main__":
+    
+    print(FiguresIO.getFigureSavePath())
+    print(FiguresIO.getFigureSavePath("test.png"))
