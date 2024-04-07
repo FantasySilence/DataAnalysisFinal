@@ -7,6 +7,7 @@
 # @Description:                                       #
 # This module is used to visualize the crawled data   #
 # =================================================== #
+import os
 import matplotlib
 import pandas as pd
 import seaborn as sns
@@ -18,6 +19,7 @@ matplotlib.rcParams['axes.unicode_minus'] = False
 from src.common.filesio import FilesIO
 from src.common.const import CONST_TABLE
 from src.common.dataonmap import map_plot
+from src.common.figuresio import FiguresIO
 
 
 class HousingDataVisualize:
@@ -35,6 +37,16 @@ class HousingDataVisualize:
         
         self.city = city
 
+        # ------ 创建存放图片的文件夹 ------ #
+        self.folder_name = city + "_figures"
+        data_folder = os.path.join(
+            FiguresIO.getFigureSavePath(), self.folder_name
+        )
+        if not os.path.exists(data_folder):
+            os.mkdir(data_folder)
+        else:
+            pass
+
         # ------ 尝试读取数据 ------ #
         try:
             self.data = pd.read_csv(FilesIO.getDataset(
@@ -44,7 +56,10 @@ class HousingDataVisualize:
             self.data = None
         
     
-    def geodistribute(self, is_show: bool=True, is_map_show:bool=False) -> None:
+    def geodistribute(
+            self, is_show: bool=True, is_map_show:bool=False, 
+            is_save: bool=False
+    ) -> None:
 
         """
         地理分布图
@@ -73,6 +88,12 @@ class HousingDataVisualize:
         ax.set_ylabel("纬度")
         ax.legend(loc="upper right")
         plt.tight_layout()
+        if is_save:
+            path = FiguresIO.getFigureSavePath(
+                "%s/%s_Visualize_GeoDistribute.png" % 
+                (self.folder_name, self.city)
+            )
+            plt.savefig(path)
         if is_show:
             plt.show()
 
@@ -81,7 +102,7 @@ class HousingDataVisualize:
             map_plot(city=self.city, is_show=is_map_show)
     
 
-    def pricearearelation(self, is_show: bool=True) -> None:
+    def pricearearelation(self, is_show: bool=True, is_save: bool=False) -> None:
 
         """
         每平方米房价与面积关系图
@@ -123,11 +144,17 @@ class HousingDataVisualize:
         )
         plt.subplots_adjust(wspace=0.3)
         plt.tight_layout()
+        if is_save:
+            path = FiguresIO.getFigureSavePath(
+                "%s/%s_Visualize_PriceVsArea.png" % 
+                (self.folder_name, self.city)
+            )
+            plt.savefig(path)
         if is_show:
             plt.show()
     
 
-    def housecharacteristics(self, is_show: bool=True) -> None:
+    def housecharacteristics(self, is_show: bool=True, is_save:bool=False) -> None:
 
         """
         房屋特征分布图
@@ -149,6 +176,8 @@ class HousingDataVisualize:
         axes[0, 0].set_title('卧室数量分布', fontsize=14)
         axes[0, 0].set_xlabel('卧室数量(间)', fontsize=12)
         axes[0, 0].set_ylabel('样本数', fontsize=12)
+        axes[0, 0].xaxis.set_tick_params(labelsize=12)
+        axes[0, 0].yaxis.set_tick_params(labelsize=12)
 
         # ------ 房间数量分布 ------ #
         sns.histplot(
@@ -159,6 +188,8 @@ class HousingDataVisualize:
         axes[0, 1].set_title('房间数量分布', fontsize=14)
         axes[0, 1].set_xlabel('房间数量(间)', fontsize=12)
         axes[0, 1].set_ylabel('样本数', fontsize=12)
+        axes[0, 1].xaxis.set_tick_params(labelsize=12)
+        axes[0, 1].yaxis.set_tick_params(labelsize=12)
 
         # ------ 房子朝向分布 ------ #
         sns.countplot(
@@ -168,6 +199,8 @@ class HousingDataVisualize:
         axes[1, 0].set_title('房子朝向分布', fontsize=14)
         axes[1, 0].set_xlabel('房子朝向', fontsize=12)
         axes[1, 0].set_ylabel('样本数', fontsize=12)
+        axes[1, 0].xaxis.set_tick_params(labelsize=12)
+        axes[1, 0].yaxis.set_tick_params(labelsize=12)
 
         # ------ 房屋年龄分布 ------ #
         sns.histplot(
@@ -177,17 +210,25 @@ class HousingDataVisualize:
         axes[1, 1].set_title('房屋年龄分布', fontsize=14)
         axes[1, 1].set_xlabel('房屋年龄（年）', fontsize=12)
         axes[1, 1].set_ylabel('样本数', fontsize=12)
+        axes[1, 1].xaxis.set_tick_params(labelsize=12)
+        axes[1, 1].yaxis.set_tick_params(labelsize=12)
 
         plt.suptitle(
             "%s房屋特征分布图\n——基于58二手房数据"%CONST_TABLE["CITY"][self.city],
             fontsize=16
         )
         plt.tight_layout()
+        if is_save:
+            path = FiguresIO.getFigureSavePath(
+                "%s/%s_Visualize_Characteristics.png" % 
+                (self.folder_name, self.city)
+            )
+            plt.savefig(path)
         if is_show:
             plt.show()
 
 
-    def houseageprice(self, is_show: bool=True) -> None:
+    def houseageprice(self, is_show: bool=True, is_save: bool=True) -> None:
 
         """
         价格与房屋年龄的关系
@@ -235,5 +276,11 @@ class HousingDataVisualize:
             fontsize=16
         )
         plt.tight_layout()
+        if is_save:
+            path = FiguresIO.getFigureSavePath(
+                "%s/%s_Visualize_AgeVsPrice.png" % 
+                (self.folder_name, self.city)
+            )
+            plt.savefig(path)
         if is_show:
             plt.show()
