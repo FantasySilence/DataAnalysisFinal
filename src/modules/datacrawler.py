@@ -90,7 +90,7 @@ class HousingDataScrape:
         for i in range(2, 51):
 
             # ------ 设置随机延时避免反爬 ------ #
-            time.sleep(random.randint(5, 10))
+            time.sleep(random.randint(1, 3))
 
             # ------ 发送请求并设置编码 ------ #
             response = requests.get(
