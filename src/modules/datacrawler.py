@@ -15,6 +15,7 @@ from lxml import etree
 
 from src.common.const import CONST_TABLE
 from src.common.filesio import FilesIO
+from src.common.randomIPandHeaders import RandomRequestInfoGenerator
 
 
 class HousingDataScrape:
@@ -91,6 +92,10 @@ class HousingDataScrape:
 
             # ------ 设置随机延时避免反爬 ------ #
             time.sleep(random.randint(1, 3))
+
+            # ------ 爬取一定数量时更换请求头与代理IP ------ #
+            if i % 10 == 0:
+                self.proxies, self.headers = RandomRequestInfoGenerator.get()
 
             # ------ 发送请求并设置编码 ------ #
             response = requests.get(
