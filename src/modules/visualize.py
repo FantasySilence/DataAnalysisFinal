@@ -53,7 +53,7 @@ class HousingDataVisualize:
         if self.data is None:
             print("ERROR: 没有该城市的数据集...")
             return
-        _, ax = plt.subplots(figsize=(12, 8), dpi=100)
+        _, ax = plt.subplots(figsize=(12, 8), dpi=100, facecolor="w")
         self.data.plot(
             kind="scatter", x="longitude", y="latitude", alpha=0.6,
             s=self.data["housePrice"] / 100, label="housePrice",
@@ -67,11 +67,12 @@ class HousingDataVisualize:
         )
 
         ax.set_title(
-            "%s二手房房价数据\n——基于58二手房"%CONST_TABLE["CITY"][self.city]
+            "%s二手房房价数据\n——基于58二手房数据"%CONST_TABLE["CITY"][self.city]
         )
         ax.set_xlabel("经度")
         ax.set_ylabel("纬度")
         ax.legend(loc="upper right")
+        plt.tight_layout()
         if is_show:
             plt.show()
 
@@ -89,11 +90,12 @@ class HousingDataVisualize:
         if self.data is None:
             print("ERROR: 没有该城市的数据集...")
             return
-        _, ax = plt.subplots(nrows=1, ncols=2, figsize=(16, 6), dpi=100)
+        _, ax = plt.subplots(nrows=1, ncols=2, figsize=(15, 7), 
+                             dpi=100, facecolor="w")
 
         self.data.plot(
             kind="scatter", x="unitPrice", y="houseArea", alpha=0.6,
-            c="unitPrice", cmap=plt.get_cmap("jet"), colorbar=True,
+            c="unitPrice", cmap=plt.get_cmap("jet"), colorbar=False,
             sharex=False, ax=ax[0], s=5
         )
         ax[0].set_xlabel("每平方米价格(元/每平方米)")
@@ -109,17 +111,18 @@ class HousingDataVisualize:
             labels=["非常小", "小", "中等", "大"]
         )
         sns.boxplot(
-            x="areaCategory", y="unitPrice", data=self.data, ax=ax[1],
+            x="areaCategory", y="housePrice", data=self.data, ax=ax[1],
             order=["非常小", "小", "中等", "大"], 
             palette=sns.color_palette("hls", 4)
         )   
         ax[1].set_xlabel("房屋面积(平方米)")
-        ax[1].set_ylabel("每平方米价格(元/每平方米)")
+        ax[1].set_ylabel("房屋总价(万元)")
         plt.suptitle(
-            "%s每平方米房价与面积关系图\n——基于58二手房"%
+            "%s每平方米房价与面积关系图\n——基于58二手房数据"%
             CONST_TABLE["CITY"][self.city]
         )
         plt.subplots_adjust(wspace=0.3)
+        plt.tight_layout()
         if is_show:
             plt.show()
     
@@ -134,7 +137,8 @@ class HousingDataVisualize:
         if self.data is None:
             print("ERROR: 没有该城市的数据集...")
             return
-        _, axes = plt.subplots(nrows=2, ncols=2, figsize=(16, 12), dpi=80)
+        _, axes = plt.subplots(nrows=2, ncols=2, figsize=(16, 12), 
+                               dpi=80, facecolor="w")
         
         # ------ 卧室数量分布 ------ #
         sns.histplot(
@@ -174,6 +178,11 @@ class HousingDataVisualize:
         axes[1, 1].set_xlabel('房屋年龄（年）', fontsize=12)
         axes[1, 1].set_ylabel('样本数', fontsize=12)
 
+        plt.suptitle(
+            "%s房屋特征分布图\n——基于58二手房数据"%CONST_TABLE["CITY"][self.city],
+            fontsize=16
+        )
+        plt.tight_layout()
         if is_show:
             plt.show()
 
@@ -187,11 +196,12 @@ class HousingDataVisualize:
         if self.data is None:
             print("ERROR: 没有该城市的数据集...")
             return
-        _, axes = plt.subplots(nrows=1, ncols=2, figsize=(16, 6), dpi=80)
+        _, axes = plt.subplots(nrows=1, ncols=2, figsize=(15, 7), 
+                               dpi=80, facecolor="w")
 
         self.data.plot(
             kind="scatter", x="houseAge", y="unitPrice", alpha=0.6,
-            c="unitPrice", cmap=plt.get_cmap("jet"), colorbar=True,
+            c="unitPrice", cmap=plt.get_cmap("jet"), colorbar=False,
             sharex=False, ax=axes[0], s=5
         )
         sns.regplot(
@@ -206,7 +216,7 @@ class HousingDataVisualize:
 
         self.data.plot(
             kind="scatter", x="houseAge", y="housePrice", alpha=0.6,
-            c="housePrice", cmap=plt.get_cmap("jet"), colorbar=True,
+            c="housePrice", cmap=plt.get_cmap("jet"), colorbar=False,
             sharex=False, ax=axes[1], s=5
         )
         sns.regplot(
@@ -219,5 +229,11 @@ class HousingDataVisualize:
         axes[1].set_xlabel("房龄(年)", fontsize=12)
         axes[1].set_ylabel("房屋总价(万元)", fontsize=12)
 
+        plt.suptitle(
+            "%s价格与房屋年龄的关系\n——基于58二手房数据"%
+            CONST_TABLE["CITY"][self.city],
+            fontsize=16
+        )
+        plt.tight_layout()
         if is_show:
             plt.show()
