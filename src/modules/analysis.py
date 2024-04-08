@@ -9,9 +9,11 @@
 # ======================================================= #
 import os
 import matplotlib
+import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from matplotlib.axes import Axes
 
 matplotlib.rcParams['font.family'] = 'SimHei'
 matplotlib.rcParams['axes.unicode_minus'] = False
@@ -54,7 +56,10 @@ class HousingDataExploratoryAnalysis:
             self.data = None
     
 
-    def draw_heatmap(self, is_show: bool=True, is_save: bool=False) -> None:
+    def draw_heatmap(
+            self, is_show_alone: bool=True, is_save: bool=False, 
+            is_show: bool=True, ax: Axes=None
+    ) -> None:
 
         """
         绘制热力图
@@ -64,7 +69,9 @@ class HousingDataExploratoryAnalysis:
             print("ERROR: 热力图绘制失败,没有该城市的数据集...")
             return
         data = self.data.drop(columns=["housePrice", "ID", "houseLoc"])
-        _, ax = plt.subplots(figsize=(12, 8), dpi=80, facecolor="w")
+        if is_show_alone:
+            _, ax = plt.subplots(figsize=(12, 8), dpi=80, facecolor="w")
+
         sns.heatmap(data.corr(), annot=True, fmt=".2f", cmap="jet", ax=ax)
         ax.set_title(
             "相关系数矩阵\n——%s房价数据"%CONST_TABLE["CITY"][self.city], 
@@ -79,11 +86,14 @@ class HousingDataExploratoryAnalysis:
                 (self.folder_name, self.city)
             )
             plt.savefig(path)
-        if is_show:
+        if is_show_alone and is_show:
             plt.show()
 
     
-    def draw_relativity(self, is_show: bool=True, is_save: bool=False) -> None:
+    def draw_relativity(
+            self, is_show_alone: bool=True, is_save: bool=False, 
+            is_show: bool=True, ax: Axes=None
+    ) -> None:
 
         """
         绘制相关性图
@@ -94,7 +104,8 @@ class HousingDataExploratoryAnalysis:
             return
         data = self.data.drop(columns=["ID", "houseLoc"])
         data = pd.get_dummies(data, drop_first=True, dtype=int)
-        _, ax = plt.subplots(figsize=(12, 8), dpi=80, facecolor="w")
+        if is_show_alone:
+            _, ax = plt.subplots(figsize=(12, 8), dpi=80, facecolor="w")
         data.corr()["housePrice"].sort_values(ascending=False).plot(
             kind="barh", ax=ax, color="skyblue"
         )
@@ -112,11 +123,14 @@ class HousingDataExploratoryAnalysis:
                 (self.folder_name, self.city)
             )
             plt.savefig(path)
-        if is_show:
+        if is_show_alone and is_show:
             plt.show()
     
 
-    def draw_category(self, is_show: bool=True, is_save: bool=False) -> None:
+    def draw_category(
+            self, is_show_alone: bool=True, is_save: bool=False, 
+            is_show: bool=True, axes: np.ndarray=None
+    ) -> None:
 
         """
         绘制分类变量
@@ -125,6 +139,10 @@ class HousingDataExploratoryAnalysis:
         if self.data is None:
             print("ERROR: 分类变量探索绘制失败, 没有该城市的数据集...")
             return
+        if is_show_alone:
+            _, axes = plt.subplots(
+                nrows=2, ncols=3, figsize=(25, 18), dpi=80, facecolor="w"
+            )   
         data = self.data.drop(columns=["ID", "houseLoc"])
         data["roomCategory"] = data["houseRoom"].apply(
             lambda x: '≥13' if x >= 13 else str(x)
@@ -138,9 +156,6 @@ class HousingDataExploratoryAnalysis:
             ],
             labels=["较低", "低", "中等", "高"]
         )
-        _, axes = plt.subplots(
-            nrows=2, ncols=3, figsize=(25, 18), dpi=80, facecolor="w"
-        )
 
         # ------ 房子朝向(houseOrientation) ------ #
         sns.countplot(
@@ -151,7 +166,7 @@ class HousingDataExploratoryAnalysis:
             x="houseOrientation", y="housePrice", data=data, ax=axes[1, 0]
         )
         axes[0, 0].set_title(
-            "房子朝向——基于%s的数据"%CONST_TABLE["CITY"][self.city],
+            "房子朝向\n——基于%s58二手房数据"%CONST_TABLE["CITY"][self.city],
             fontsize=14
         )
         axes[0, 0].xaxis.set_tick_params(labelsize=12)
@@ -179,7 +194,7 @@ class HousingDataExploratoryAnalysis:
             )
         )
         axes[0, 1].set_title(
-            "房间数量——基于%s的数据"%CONST_TABLE["CITY"][self.city],
+            "房间数量\n——基于%s58二手房数据"%CONST_TABLE["CITY"][self.city],
             fontsize=14
         )
         axes[0, 1].xaxis.set_tick_params(labelsize=12)
@@ -200,7 +215,7 @@ class HousingDataExploratoryAnalysis:
             x="houseBedroom", y="housePrice", data=data, ax=axes[1, 2]
         )
         axes[0, 2].set_title(
-            "卧室数量——基于%s的数据"%CONST_TABLE["CITY"][self.city],
+            "卧室数量\n——基于%s58二手房数据"%CONST_TABLE["CITY"][self.city],
             fontsize=14
         )
         axes[0, 2].xaxis.set_tick_params(labelsize=12)
@@ -219,11 +234,14 @@ class HousingDataExploratoryAnalysis:
                 (self.folder_name, self.city)
             )
             plt.savefig(path)
-        if is_show:
+        if is_show_alone and is_show:
             plt.show()
     
 
-    def draw_continuity(self, is_show: bool=True, is_save: bool=False) -> None:
+    def draw_continuity(
+            self, is_show_alone: bool=True, is_save: bool=False, 
+            is_show: bool=True, axes: np.ndarray=None
+    ) -> None:
 
         """
         绘制连续变量
@@ -233,16 +251,21 @@ class HousingDataExploratoryAnalysis:
             print("ERROR: 连续变量探索绘制失败, 没有该城市的数据集...")
             return
         data = self.data.drop(columns=["ID", "houseLoc"])
-        _, axes = plt.subplots(
-            nrows=2, ncols=3, figsize=(25, 18), dpi=80, facecolor="w"
-        )
+        if is_show_alone:
+            _, axes = plt.subplots(
+                nrows=2, ncols=3, figsize=(25, 18), dpi=80, facecolor="w"
+            )
 
         # ------ longitude ------ #
         sns.histplot(
             x="longitude", data=data, ax=axes[0, 0], color="skyblue",
             kde=True
         )
-        axes[0, 0].set_title("经度(longitude)", fontsize=14)
+        axes[0, 0].set_title(
+            "经度(longitude)\n——基于%s58二手房数据" % 
+            CONST_TABLE["CITY"][self.city], 
+            fontsize=14
+        )
         axes[0, 0].xaxis.set_tick_params(labelsize=12)
         axes[0, 0].yaxis.set_tick_params(labelsize=12)
 
@@ -251,7 +274,11 @@ class HousingDataExploratoryAnalysis:
             x="latitude", data=data, ax=axes[1, 0], color="limegreen",
             kde=True
         )
-        axes[1, 0].set_title("纬度(latitude)", fontsize=14)
+        axes[1, 0].set_title(
+            "纬度(latitude)\n——基于%s58二手房数据" % 
+            CONST_TABLE["CITY"][self.city], 
+            fontsize=14
+        )
         axes[1, 0].xaxis.set_tick_params(labelsize=12)
         axes[1, 0].yaxis.set_tick_params(labelsize=12)
 
@@ -260,7 +287,11 @@ class HousingDataExploratoryAnalysis:
             x="unitPrice", data=data, ax=axes[0, 1], color="violet",
             kde=True
         )
-        axes[0, 1].set_title("每平方米价格(unitPrice)", fontsize=14)
+        axes[0, 1].set_title(
+            "每平方米价格(unitPrice)\n——基于%s58二手房数据" % 
+            CONST_TABLE["CITY"][self.city], 
+            fontsize=14
+        )
         axes[0, 1].xaxis.set_tick_params(labelsize=12)
         axes[0, 1].yaxis.set_tick_params(labelsize=12)
 
@@ -269,7 +300,11 @@ class HousingDataExploratoryAnalysis:
             x="housePrice", data=data, ax=axes[1, 1], color="darkorange",
             kde=True
         )
-        axes[1, 1].set_title("总价(housePrice)", fontsize=14)
+        axes[1, 1].set_title(
+            "总价(housePrice)\n——基于%s58二手房数据" % 
+            CONST_TABLE["CITY"][self.city], 
+            fontsize=14
+        )
         axes[1, 1].xaxis.set_tick_params(labelsize=12)
         axes[1, 1].yaxis.set_tick_params(labelsize=12)
 
@@ -278,7 +313,11 @@ class HousingDataExploratoryAnalysis:
             x="houseArea", data=data, ax=axes[0, 2], color="lime",
             kde=True
         )
-        axes[0, 2].set_title("房子面积(houseArea)", fontsize=14)
+        axes[0, 2].set_title(
+            "房子面积(houseArea)\n——基于%s58二手房数据" % 
+            CONST_TABLE["CITY"][self.city], 
+            fontsize=14
+        )
         axes[0, 2].xaxis.set_tick_params(labelsize=12)
         axes[0, 2].yaxis.set_tick_params(labelsize=12)
 
@@ -287,7 +326,11 @@ class HousingDataExploratoryAnalysis:
             x="houseAge", data=data, ax=axes[1, 2], color="red",
             kde=True
         )
-        axes[1, 2].set_title("房龄(houseAge)", fontsize=14)
+        axes[1, 2].set_title(
+            "房龄(houseAge)\n——基于%s58二手房数据" % 
+            CONST_TABLE["CITY"][self.city], 
+            fontsize=14
+        )
         axes[1, 2].xaxis.set_tick_params(labelsize=12)
         axes[1, 2].yaxis.set_tick_params(labelsize=12)
 
@@ -298,5 +341,5 @@ class HousingDataExploratoryAnalysis:
                 (self.folder_name, self.city)
             )
             plt.savefig(path)
-        if is_show:
+        if is_show_alone and is_show:
             plt.show()
