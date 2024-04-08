@@ -21,6 +21,7 @@ from src.common.randomIPandHeaders import RandomRequestInfoGenerator
 class HousingDataScrape:
     
     """
+    TODO: 修改：这个模块需要重新接入一个实现反爬的工具包
     封装一个数据爬取类，用于爬取网页的html文件
     """
 

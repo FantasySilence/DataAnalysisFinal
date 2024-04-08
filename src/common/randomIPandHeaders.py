@@ -14,6 +14,7 @@ import random
 class RandomRequestInfoGenerator:
     
     """
+    TODO: 修改：这个模块需要修改，或将修改为反爬工具类
     实现一个随机生成请求信息的类
     """
 
