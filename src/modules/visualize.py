@@ -9,9 +9,11 @@
 # =================================================== #
 import os
 import matplotlib
+import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from matplotlib.axes import Axes
 
 matplotlib.rcParams['font.family'] = 'SimHei'
 matplotlib.rcParams['axes.unicode_minus'] = False
@@ -57,17 +59,24 @@ class HousingDataVisualize:
     
     def geodistribute(
             self, is_show: bool=True, is_map_show:bool=False, 
-            is_save: bool=False
+            is_save: bool=False, is_show_alone: bool=True, ax: Axes=None
     ) -> None:
 
         """
         地理分布图
+        is_show：是否显示
+        is_show_alone：是否显示于单独的画布上. 如果想单独显示，设置为True，如果想作为子图
+                       与其他图片一起显示，自行设置画布(至少1x1)并将该参数设置为False
+        is_save：是否以png格式保存图片，设置为True将保存于项目根路径下的figures文件夹中
+        is_map_show：是否将数据与真实地图相结合，设置为True，请科学上网
         """
 
         if self.data is None:
             print("ERROR: 地理分布图绘制失败, 没有该城市的数据集...")
             return
-        _, ax = plt.subplots(figsize=(12, 8), dpi=100, facecolor="w")
+        if is_show_alone:
+            _, ax = plt.subplots(figsize=(12, 8), dpi=100, facecolor="w")
+
         self.data.plot(
             kind="scatter", x="longitude", y="latitude", alpha=0.6,
             s=self.data["housePrice"] / 100, label="housePrice",
@@ -93,7 +102,7 @@ class HousingDataVisualize:
                 (self.folder_name, self.city)
             )
             plt.savefig(path)
-        if is_show:
+        if is_show_alone and is_show:
             plt.show()
 
         # ------ 将数据绘制在地图上 ------ #
@@ -101,25 +110,38 @@ class HousingDataVisualize:
             map_plot(city=self.city, is_show=is_map_show)
     
 
-    def pricearearelation(self, is_show: bool=True, is_save: bool=False) -> None:
+    def pricearearelation(
+            self, is_show_alone: bool=True, is_save: bool=False, 
+            is_show: bool=True, axes: np.ndarray=None
+    ) -> None:
 
         """
         每平方米房价与面积关系图
+        is_show：是否显示
+        is_show_alone：是否显示于单独的画布上. 如果想单独显示，设置为True，如果想作为子图
+                       与其他图片一起显示，自行设置画布(至少1x2)并将该参数设置为False
+        is_save：是否以png格式保存图片，设置为True将保存于项目根路径下的figures文件夹中
         """
 
         if self.data is None:
             print("ERROR: 每平方米房价与面积关系图绘制失败, 没有该城市的数据集...")
             return
-        _, ax = plt.subplots(nrows=1, ncols=2, figsize=(15, 7), 
-                             dpi=100, facecolor="w")
+        if is_show_alone:
+            _, axes = plt.subplots(nrows=1, ncols=2, figsize=(15, 7), 
+                                dpi=100, facecolor="w")
 
         self.data.plot(
             kind="scatter", x="unitPrice", y="houseArea", alpha=0.6,
             c="unitPrice", cmap=plt.get_cmap("jet"), colorbar=False,
-            sharex=False, ax=ax[0], s=5
+            sharex=False, ax=axes[0], s=5
         )
-        ax[0].set_xlabel("每平方米价格(元/每平方米)")
-        ax[0].set_ylabel("房屋面积(平方米)")
+        axes[0].set_title(
+            "每平方米价格 VS 房屋面积\n——基于%s58二手房数据" %
+            CONST_TABLE["CITY"][self.city],
+            fontsize=14
+        )
+        axes[0].set_xlabel("每平方米价格(元/每平方米)")
+        axes[0].set_ylabel("房屋面积(平方米)")
 
         quantiles = self.data["houseArea"].quantile([0.25, 0.75])
         self.data["areaCategory"] = pd.cut(
@@ -131,16 +153,18 @@ class HousingDataVisualize:
             labels=["非常小", "小", "中等", "大"]
         )
         sns.boxplot(
-            x="areaCategory", y="housePrice", data=self.data, ax=ax[1],
+            x="areaCategory", y="housePrice", data=self.data, ax=axes[1],
             order=["非常小", "小", "中等", "大"], 
             palette=sns.color_palette("hls", 4)
-        )   
-        ax[1].set_xlabel("房屋面积(平方米)")
-        ax[1].set_ylabel("房屋总价(万元)")
-        plt.suptitle(
-            "%s每平方米房价与面积关系图\n——基于58二手房数据"%
-            CONST_TABLE["CITY"][self.city]
         )
+        axes[1].set_title(
+            "房屋面积 VS 每平方米价格\n——基于%s58二手房数据" %
+            CONST_TABLE["CITY"][self.city],
+            fontsize=14
+        )   
+        axes[1].set_xlabel("房屋面积(平方米)")
+        axes[1].set_ylabel("房屋总价(万元)")
+
         plt.subplots_adjust(wspace=0.3)
         plt.tight_layout()
         if is_save:
@@ -149,22 +173,30 @@ class HousingDataVisualize:
                 (self.folder_name, self.city)
             )
             plt.savefig(path)
-        if is_show:
+        if is_show_alone and is_show:
             plt.show()
     
 
-    def housecharacteristics(self, is_show: bool=True, is_save:bool=False) -> None:
+    def housecharacteristics(
+            self, is_show_alone: bool=True, is_save:bool=False, 
+            is_show: bool=True, axes: np.ndarray=None
+    ) -> None:
 
         """
         房屋特征分布图
         分别绘制卧室数量与房间数量分布，房子朝向分布，房屋年龄分布
+        is_show：是否显示
+        is_show_alone：是否显示于单独的画布上. 如果想单独显示，设置为True，如果想作为子图
+                       与其他图片一起显示，自行设置画布(至少1x2)并将该参数设置为False
+        is_save：是否以png格式保存图片，设置为True将保存于项目根路径下的figures文件夹中
         """
         
         if self.data is None:
             print("ERROR: 房屋特征分布图绘制失败, 没有该城市的数据集...")
             return
-        _, axes = plt.subplots(nrows=2, ncols=2, figsize=(16, 12), 
-                               dpi=80, facecolor="w")
+        if is_show_alone:
+            _, axes = plt.subplots(nrows=2, ncols=2, figsize=(16, 12), 
+                                dpi=80, facecolor="w")
         
         # ------ 卧室数量分布 ------ #
         sns.histplot(
@@ -172,7 +204,10 @@ class HousingDataVisualize:
             bins=max(self.data["houseBedroom"]) - min(self.data["houseBedroom"]),
             kde=False, ax=axes[0, 0], color="skyblue"
         )
-        axes[0, 0].set_title('卧室数量分布', fontsize=14)
+        axes[0, 0].set_title(
+            '%s卧室数量分布' % CONST_TABLE["CITY"][self.city], 
+            fontsize=14
+        )
         axes[0, 0].set_xlabel('卧室数量(间)', fontsize=12)
         axes[0, 0].set_ylabel('样本数', fontsize=12)
         axes[0, 0].xaxis.set_tick_params(labelsize=12)
@@ -184,7 +219,10 @@ class HousingDataVisualize:
             bins=max(self.data["houseRoom"]) - min(self.data["houseRoom"]),
             kde=False, ax=axes[0, 1], color="lightgreen"
         )
-        axes[0, 1].set_title('房间数量分布', fontsize=14)
+        axes[0, 1].set_title(
+            '%s房间数量分布' % CONST_TABLE["CITY"][self.city], 
+            fontsize=14
+        )
         axes[0, 1].set_xlabel('房间数量(间)', fontsize=12)
         axes[0, 1].set_ylabel('样本数', fontsize=12)
         axes[0, 1].xaxis.set_tick_params(labelsize=12)
@@ -195,7 +233,10 @@ class HousingDataVisualize:
             x="houseOrientation", data=self.data, ax=axes[1, 0],
             color="gold"
         )
-        axes[1, 0].set_title('房子朝向分布', fontsize=14)
+        axes[1, 0].set_title(
+            '%s房子朝向分布' % CONST_TABLE["CITY"][self.city], 
+            fontsize=14
+        )
         axes[1, 0].set_xlabel('房子朝向', fontsize=12)
         axes[1, 0].set_ylabel('样本数', fontsize=12)
         axes[1, 0].xaxis.set_tick_params(labelsize=12)
@@ -206,16 +247,15 @@ class HousingDataVisualize:
             self.data["houseAge"].dropna(),
             kde=True, ax=axes[1, 1], color="salmon", 
         )
-        axes[1, 1].set_title('房屋年龄分布', fontsize=14)
+        axes[1, 1].set_title(
+            '%s房屋年龄分布' % CONST_TABLE["CITY"][self.city], 
+            fontsize=14
+        )
         axes[1, 1].set_xlabel('房屋年龄（年）', fontsize=12)
         axes[1, 1].set_ylabel('样本数', fontsize=12)
         axes[1, 1].xaxis.set_tick_params(labelsize=12)
         axes[1, 1].yaxis.set_tick_params(labelsize=12)
 
-        plt.suptitle(
-            "%s房屋特征分布图\n——基于58二手房数据"%CONST_TABLE["CITY"][self.city],
-            fontsize=16
-        )
         plt.tight_layout()
         if is_save:
             path = FiguresIO.getFigureSavePath(
@@ -223,21 +263,30 @@ class HousingDataVisualize:
                 (self.folder_name, self.city)
             )
             plt.savefig(path)
-        if is_show:
+        if is_show_alone and is_show:
             plt.show()
 
 
-    def houseageprice(self, is_show: bool=True, is_save: bool=True) -> None:
+    def houseageprice(
+            self, is_show_alone: bool=True, is_save: bool=True, 
+            is_show: bool=True, axes: np.ndarray=None
+    ) -> None:
 
         """
         价格与房屋年龄的关系
+        is_show：是否显示
+        is_show_alone：是否显示于单独的画布上. 如果想单独显示，设置为True，如果想作为子图
+                       与其他图片一起显示，自行设置画布(至少1x2)并将该参数设置为False
+        is_save：是否以png格式保存图片，设置为True将保存于项目根路径下的figures文件夹中
         """
 
         if self.data is None:
             print("ERROR: 价格与房屋年龄的关系图绘制失败, 没有该城市的数据集...")
             return
-        _, axes = plt.subplots(nrows=1, ncols=2, figsize=(15, 7), 
-                               dpi=80, facecolor="w")
+        if is_show_alone:
+            _, axes = plt.subplots(
+                nrows=1, ncols=2, figsize=(15, 7), dpi=80, facecolor="w"
+            )
 
         self.data.plot(
             kind="scatter", x="houseAge", y="unitPrice", alpha=0.6,
@@ -250,7 +299,11 @@ class HousingDataVisualize:
             scatter=False,
             line_kws={'color': 'darkcyan'}, ax=axes[0]
         )
-        axes[0].set_title("每平方米房价 VS 房龄", fontsize=14)
+        axes[0].set_title(
+            "每平方米房价 VS 房龄\n——基于%s58二手房数据" % 
+            CONST_TABLE["CITY"][self.city], 
+            fontsize=14
+        )
         axes[0].set_xlabel("房龄(年)", fontsize=12)
         axes[0].set_ylabel("每平方米房价(元/平方米)", fontsize=12)
 
@@ -265,15 +318,14 @@ class HousingDataVisualize:
             scatter=False, 
             line_kws={'color': 'darkcyan'}, ax=axes[1]
         )
-        axes[1].set_title("房屋总价 VS 房龄", fontsize=14)
+        axes[1].set_title(
+            "房屋总价 VS 房龄\n——基于%s58二手房数据" % 
+            CONST_TABLE["CITY"][self.city], 
+            fontsize=14
+        )
         axes[1].set_xlabel("房龄(年)", fontsize=12)
         axes[1].set_ylabel("房屋总价(万元)", fontsize=12)
 
-        plt.suptitle(
-            "%s价格与房屋年龄的关系\n——基于58二手房数据"%
-            CONST_TABLE["CITY"][self.city],
-            fontsize=16
-        )
         plt.tight_layout()
         if is_save:
             path = FiguresIO.getFigureSavePath(
@@ -281,5 +333,5 @@ class HousingDataVisualize:
                 (self.folder_name, self.city)
             )
             plt.savefig(path)
-        if is_show:
+        if is_show_alone and is_show:
             plt.show()
