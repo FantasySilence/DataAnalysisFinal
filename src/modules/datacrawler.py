@@ -20,7 +20,8 @@ from src.common.filesio import FilesIO
 class HousingDataScrape:
     
     """
-    TODO: 修改：这个模块请求的网页会出bug，不过可以多次重复请求结局
+    BUG: 一个小bug，请求不到数据会尝试直到成功
+    FIXME: 需修复，添加最大请求次数解决陷入死循环的bug
     封装一个数据爬取类，用于爬取网页的html文件
     """
 
