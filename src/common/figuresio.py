@@ -32,6 +32,9 @@ class FiguresIO:
         root_path = os.path.dirname(src_path)
         # figures文件夹路径
         figures_path = os.path.join(root_path, "figures")
+        # 确保figures文件夹路径存在
+        if not os.path.exists(figsave_path):
+            os.makedirs(figsave_path)
         # 目标文件路径
         if figname is None:
             figsave_path = os.path.join(figures_path)

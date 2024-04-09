@@ -35,6 +35,9 @@ class FilesIO:
         # 目标文件路径
         if filename is None:
             dataset_path = os.path.join(resources_path, "datasets")
+            # 如果是None, 必然是在找存放数据的文件夹，如果没有就建一个
+            if not os.path.exists(dataset_path):
+                os.mkdir(dataset_path)
         else:
             dataset_path = os.path.join(resources_path, "datasets", filename)
         return dataset_path
@@ -58,6 +61,9 @@ class FilesIO:
         # 目标文件路径
         if filename is None:
             htmltext_path = os.path.join(resources_path, "webtexts")
+            # 如果是None, 必然是在找存放数据的文件夹，如果没有就建一个
+            if not os.path.exists(htmltext_path):
+                os.mkdir(htmltext_path)
         else:
             htmltext_path = os.path.join(resources_path, "webtexts", filename)
         return htmltext_path
