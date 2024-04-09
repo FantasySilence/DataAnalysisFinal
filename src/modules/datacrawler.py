@@ -63,23 +63,28 @@ class HousingDataScrape:
         获取第一页的数据
         """
 
-        # ------ 发送请求并设置编码 ------ #
-        response = requests.get(
-            url=CONST_TABLE["URL"][self.city],
-            headers=self.headers, proxies=self.proxies,
-        )
-        response.encoding = "utf-8"
+        while True:
+            # ------ 设置随机延时避免反爬 ------ #
+            time.sleep(random.randint(5, 10))
 
-        # ------ 获取html文件并储存 ------ #
-        tree = etree.HTML(response.text)
-        if len(tree.xpath('//div[@class="property"]')) != 0:
-            file_name = "%s_page_%d.html" % (self.city, 1)
-            path = FilesIO.getHTMLtext("%s/%s" % (self.folder_name, file_name))
-            with open(path, "w", encoding="utf-8") as f:
-                f.write(response.text)
-            print("Get data from page_%d successfully!" % 1)
-        else:
-            print("Error: Failed to get data from page_1")
+            # ------ 发送请求并设置编码 ------ #
+            response = requests.get(
+                url=CONST_TABLE["URL"][self.city],
+                headers=self.headers, proxies=self.proxies,
+            )
+            response.encoding = "utf-8"
+
+            # ------ 获取html文件并储存 ------ #
+            tree = etree.HTML(response.text)
+            if len(tree.xpath('//div[@class="property"]')) != 0:
+                file_name = "%s_page_%d.html" % (self.city, 1)
+                path = FilesIO.getHTMLtext("%s/%s" % (self.folder_name, file_name))
+                with open(path, "w", encoding="utf-8") as f:
+                    f.write(response.text)
+                print("Get data from page_%d successfully!" % 1)
+                break
+            else:
+                print("ERROR: Failed to get data from page_1. Retry...")
 
 
     def _get_rest_of_pages(self) -> None:
@@ -89,24 +94,26 @@ class HousingDataScrape:
         """
 
         for i in range(2, 51):
+            while True:
 
-            # ------ 设置随机延时避免反爬 ------ #
-            time.sleep(random.randint(5, 10))
+                # ------ 设置随机延时避免反爬 ------ #
+                time.sleep(random.randint(5, 10))
 
-            # ------ 发送请求并设置编码 ------ #
-            response = requests.get(
-                url=CONST_TABLE["URL"][self.city] + "p%d/" % i,
-                headers=self.headers, proxies=self.proxies,
-            )
-            response.encoding = "utf-8"
+                # ------ 发送请求并设置编码 ------ #
+                response = requests.get(
+                    url=CONST_TABLE["URL"][self.city] + "p%d/" % i,
+                    headers=self.headers, proxies=self.proxies,
+                )
+                response.encoding = "utf-8"
 
-            # ------ 获取html文件并储存 ------ #
-            tree = etree.HTML(response.text)
-            if len(tree.xpath('//div[@class="property"]')) != 0:
-                file_name = "%s_page_%d.html" % (self.city, i)
-                path = FilesIO.getHTMLtext("%s/%s" % (self.folder_name, file_name))
-                with open(path, "w", encoding="utf-8") as f:
-                    f.write(response.text)
-                print("Get data from page_%d successfully!" % i)
-            else:
-                print("Error: Failed to get data from page_%d" % i)
+                # ------ 获取html文件并储存 ------ #
+                tree = etree.HTML(response.text)
+                if len(tree.xpath('//div[@class="property"]')) != 0:
+                    file_name = "%s_page_%d.html" % (self.city, i)
+                    path = FilesIO.getHTMLtext("%s/%s" % (self.folder_name, file_name))
+                    with open(path, "w", encoding="utf-8") as f:
+                        f.write(response.text)
+                    print("Get data from page_%d successfully!" % i)
+                    break
+                else:
+                    print("ERROR: Failed to get data from page_%d. Retry..." % i)
