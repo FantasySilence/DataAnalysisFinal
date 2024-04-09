@@ -15,13 +15,12 @@ from lxml import etree
 
 from src.common.const import CONST_TABLE
 from src.common.filesio import FilesIO
-from src.common.randomIPandHeaders import RandomRequestInfoGenerator
 
 
 class HousingDataScrape:
     
     """
-    TODO: 修改：这个模块需要重新接入一个实现反爬的工具包
+    TODO: 修改：这个模块请求的网页会出bug，不过可以多次重复请求结局
     封装一个数据爬取类，用于爬取网页的html文件
     """
 
