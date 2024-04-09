@@ -42,6 +42,7 @@ class FiguresIO:
             figsave_path = os.path.join(figures_path, figname)
         return figsave_path
 
+
 if __name__ == "__main__":
     
     print(FiguresIO.getFigureSavePath())

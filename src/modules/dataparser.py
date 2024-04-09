@@ -7,8 +7,8 @@
 # @Description:                             #
 # This module is used for parsing HTML data #
 # ========================================= #
-import pandas as pd
 import numpy as np
+import pandas as pd
 from lxml import etree
 
 from src.common.filesio import FilesIO
