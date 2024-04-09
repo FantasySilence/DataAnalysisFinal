@@ -18,7 +18,7 @@ CONST_TABLE = {
         "CD": "https://cd.58.com/ershoufang/",
         "HZ": "https://hz.58.com/ershoufang/",
         "NJ": "https://nj.58.com/ershoufang/",
-        "TJ": "https://sz.58.com/ershoufang/",
+        "TJ": "https://tj.58.com/ershoufang/",
         "WH": "https://wh.58.com/ershoufang/",
         "CQ": "https://cq.58.com/ershoufang/",
         "XM": "https://xm.58.com/ershoufang/",
