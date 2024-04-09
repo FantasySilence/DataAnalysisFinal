@@ -30,13 +30,21 @@ class HousingDataVisualize:
     对爬取的数据进行可视化
     """
 
-    def __init__(self, city: str) -> None:
+    def __init__(self, city: str=None) -> None:
 
         """
         city: 城市名称，例如北京市(city="BJ")
         """
         
-        self.city = city
+        # ------ 检查输入 ------ #
+        if city is None or type(city) != str:
+            print("ERROR: Inappropriate input of city name...")
+            exit(1)
+        elif city not in list(CONST_TABLE["CITY"].keys()):
+            print("ERROR: City name not included, please add it in const.py")
+            exit(1)
+        else:
+            self.city = city
 
         # ------ 创建存放图片的文件夹 ------ #
         self.folder_name = city + "_figures"

@@ -23,13 +23,21 @@ class HousingDataParse:
     封装一个数据解析类，用于解析爬取网页的html文件
     """
 
-    def __init__(self, city: str) -> None:
+    def __init__(self, city: str=None) -> None:
 
         """
         city: 待解析数据的城市名称，如北京(city="BJ")
         """
         
-        self.city = city
+        # ------ 检查输入 ------ #
+        if city is None or type(city) != str:
+            print("ERROR: Inappropriate input of city name...")
+            exit(1)
+        elif city not in list(CONST_TABLE["CITY"].keys()):
+            print("ERROR: City name not included, please add it in const.py")
+            exit(1)
+        else:
+            self.city = city
 
         # ------ 初始化存储爬取信息的列表，便于存入csv ------ #
         self.house_price_list = []          # 存储房价
