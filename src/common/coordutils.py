@@ -57,7 +57,7 @@ class CoordTransformer:
         return ret
 
 
-    def __transform__(self) -> None:
+    def __transform__(self) -> tuple[float]:
 
         """
         坐标转换主函数
