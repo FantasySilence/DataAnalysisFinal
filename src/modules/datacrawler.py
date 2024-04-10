@@ -17,7 +17,7 @@ from src.common.filesio import FilesIO
 from src.common.const import CONST_TABLE
 
 
-class HousingDataScrape:
+class HousingDataSpider:
     
     """
     封装一个数据爬取类，用于爬取网页的html文件

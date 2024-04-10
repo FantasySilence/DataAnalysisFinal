@@ -16,7 +16,7 @@ from src.common.const import CONST_TABLE
 from src.common.lnglat import GetLongitudeLatitude
 
 
-class HousingDataParse:
+class HousingDataParser:
 
     """
     TODO：添加：后续应该会解析更多的信息
