@@ -18,7 +18,7 @@ class RandomRequestInfoGenerator:
     """
 
     @staticmethod
-    def get():
+    def get() -> tuple[dict[str, str], dict[str, str]]:
 
         """
         随机获取ip和headers
