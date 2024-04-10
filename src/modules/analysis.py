@@ -80,7 +80,7 @@ class HousingDataExploratoryAnalysis:
         if is_show_alone:
             _, ax = plt.subplots(figsize=(12, 8), dpi=80, facecolor="w")
 
-        sns.heatmap(data.corr(), annot=True, fmt=".2f", cmap="jet", ax=ax)
+        sns.heatmap(data.corr(), annot=True, fmt=".2f", cmap="Blues", ax=ax)
         ax.set_title(
             "相关系数矩阵\n——%s房价数据"%CONST_TABLE["CITY"][self.city], 
             fontsize=20
