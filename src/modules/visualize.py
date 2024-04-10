@@ -109,7 +109,7 @@ class HousingDataVisualize:
                 "%s/%s_Visualize_GeoDistribute.png" % 
                 (self.folder_name, self.city)
             )
-            plt.savefig(path)
+            plt.savefig(path, dpi=300)
         if is_show_alone and is_show:
             plt.show()
 
@@ -180,7 +180,7 @@ class HousingDataVisualize:
                 "%s/%s_Visualize_PriceVsArea.png" % 
                 (self.folder_name, self.city)
             )
-            plt.savefig(path)
+            plt.savefig(path, dpi=300)
         if is_show_alone and is_show:
             plt.show()
     
@@ -270,7 +270,7 @@ class HousingDataVisualize:
                 "%s/%s_Visualize_Characteristics.png" % 
                 (self.folder_name, self.city)
             )
-            plt.savefig(path)
+            plt.savefig(path, dpi=300)
         if is_show_alone and is_show:
             plt.show()
 
@@ -340,6 +340,6 @@ class HousingDataVisualize:
                 "%s/%s_Visualize_AgeVsPrice.png" % 
                 (self.folder_name, self.city)
             )
-            plt.savefig(path)
+            plt.savefig(path, dpi=300)
         if is_show_alone and is_show:
             plt.show()

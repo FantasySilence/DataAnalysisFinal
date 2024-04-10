@@ -93,7 +93,7 @@ class HousingDataExploratoryAnalysis:
                 "%s/%s_Analysis_Heatmap.png" % 
                 (self.folder_name, self.city)
             )
-            plt.savefig(path)
+            plt.savefig(path, dpi=300)
         if is_show_alone and is_show:
             plt.show()
 
@@ -130,7 +130,7 @@ class HousingDataExploratoryAnalysis:
                 "%s/%s_Analysis_Relativity.png" % 
                 (self.folder_name, self.city)
             )
-            plt.savefig(path)
+            plt.savefig(path, dpi=300)
         if is_show_alone and is_show:
             plt.show()
     
@@ -241,7 +241,7 @@ class HousingDataExploratoryAnalysis:
                 "%s/%s_Analysis_CategoryVar.png" % 
                 (self.folder_name, self.city)
             )
-            plt.savefig(path)
+            plt.savefig(path, dpi=300)
         if is_show_alone and is_show:
             plt.show()
     
@@ -348,6 +348,6 @@ class HousingDataExploratoryAnalysis:
                 "%s/%s_Analysis_ContinuousVar.png" % 
                 (self.folder_name, self.city)
             )
-            plt.savefig(path)
+            plt.savefig(path, dpi=300)
         if is_show_alone and is_show:
             plt.show()
