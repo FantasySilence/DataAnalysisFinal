@@ -49,11 +49,11 @@ class HousingDataSpider:
         
         self.proxies = proxies
         self.headers = headers
-        self.requests_num = 0       # 总请求次数，用于max_retry的验证
         if cookie is not None:
             self.headers["cookie"] = cookie
 
         # ------ 设置最大重试次数 ------ #
+        self.requests_num = 0       # 总请求次数，用于max_retry的验证
         if max_retry is None:
             # 默认一直请求直到获得数据
             self.flag = "True"
