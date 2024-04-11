@@ -10,6 +10,7 @@
 import numpy as np
 import pandas as pd
 from lxml import etree
+from functools import reduce
 
 from src.common.filesio import FilesIO
 from src.common.const import CONST_TABLE
