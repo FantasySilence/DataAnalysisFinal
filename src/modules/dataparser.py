@@ -23,7 +23,7 @@ class HousingDataParser:
     封装一个数据解析类，用于解析爬取网页的html文件
     """
 
-    def __init__(self, city: str=None) -> None:
+    def __init__(self, city: str=None, parse_more: bool=False) -> None:
 
         """
         city: 待解析数据的城市名称，如北京(city="BJ")
@@ -166,3 +166,15 @@ class HousingDataParser:
         self.df.insert(1, "longitude", self.longitude_list)
         self.df.insert(2, "latitude", self.latitude_list)
         self.df.insert(0, "ID", range(1, len(self.df) + 1))
+    
+
+    @staticmethod
+    def parse_more(city: str) -> None:
+
+        """
+        用于解析更多信息的接口
+        """
+
+        data = pd.read_csv(FilesIO.getDataset("%s_housing_data.csv" % city))
+        
+        pass
