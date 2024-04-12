@@ -34,30 +34,41 @@ class PipeLineForPaperHousingData:
 
         # ------ 第一步，数据清洗 ------ #
         pipeline_step_1 = Pipeline([
+            # 某些NA值并非缺失值，这部分替换为None
             ("replace_na", ReplaceNAtoNone(self.is_replace)),
+            # 去掉重复值太多的列
             ("drop_columns", DropColumns(self.is_drop)),
         ])
         X = pipeline_step_1.fit_transform(X)
 
         # ------ 第二步，数据预处理 ------ #
         num_pipeline = Pipeline([
+            # 填充缺失值，填充策略为以均值填充
             ("imputer", SimpleImputer(strategy="mean")),
+            # 标准化
             ("std_scaler", StandardScaler()),
         ])      # 连续变量处理
         
         cat_pipeline = Pipeline([
+            # 填充缺失值，填充策略为以出现次数最多的类别填充
             ("imputer", SimpleImputer(strategy="most_frequent")),
+            # 对分类变量编码
             ("ordinal_encoder", OrdinalEncoder()),
         ])      # 分类变量处理
 
+        # ------ 分别提取连续变量和分类变量的列名 ------ #
         num_attribs = [col for col in X.columns if str(X[col].dtype) == 'float64']
         cat_attribs = [col for col in X.columns if str(X[col].dtype) != 'float64']
+        
+        # ------ 第三步，整合为一个管道 ------ #
         pipeline_step_2 = ColumnTransformer([
             ("num", num_pipeline, num_attribs),
             ("cat", cat_pipeline, cat_attribs[:-1]),
             ("target", FunctionTransformer(np.log), [cat_attribs[-1]]),
-        ])      # 合并上面两个管道
+        ])      
         X = pipeline_step_2.fit_transform(X)
+
+        # ------ 第四步，以DataFrame的形式输出 ------ #
         X_df = pd.DataFrame(X, columns=num_attribs + cat_attribs)
         return X_df
     
