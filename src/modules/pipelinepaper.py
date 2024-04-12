@@ -52,12 +52,12 @@ class PipeLineForPaperHousingData:
 
         num_attribs = [col for col in X.columns if str(X[col].dtype) == 'float64']
         cat_attribs = [col for col in X.columns if str(X[col].dtype) != 'float64']
-        transfer_pipe = ColumnTransformer([
+        pipeline_step_2 = ColumnTransformer([
             ("num", num_pipeline, num_attribs),
             ("cat", cat_pipeline, cat_attribs[:-1]),
             ("target", FunctionTransformer(np.log), [cat_attribs[-1]]),
         ])      # 合并上面两个管道
-        X = transfer_pipe.fit_transform(X)
+        X = pipeline_step_2.fit_transform(X)
         X_df = pd.DataFrame(X, columns=num_attribs + cat_attribs)
         return X_df
     
