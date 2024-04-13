@@ -98,10 +98,11 @@ class HousingDataVisualize:
         )
 
         ax.set_title(
-            "%s二手房房价数据\n——基于58二手房数据"%CONST_TABLE["CITY"][self.city]
+            "%s二手房房价数据\n——基于58二手房数据"%CONST_TABLE["CITY"][self.city],
+            fontsize=16
         )
-        ax.set_xlabel("经度")
-        ax.set_ylabel("纬度")
+        ax.set_xlabel("经度", fontsize=13)
+        ax.set_ylabel("纬度", fontsize=13)
         ax.legend(loc="upper right")
         plt.tight_layout()
         if is_save:
@@ -146,10 +147,10 @@ class HousingDataVisualize:
         axes[0].set_title(
             "每平方米价格 VS 房屋面积\n——基于%s58二手房数据" %
             CONST_TABLE["CITY"][self.city],
-            fontsize=14
+            fontsize=16
         )
-        axes[0].set_xlabel("每平方米价格(元/每平方米)")
-        axes[0].set_ylabel("房屋面积(平方米)")
+        axes[0].set_xlabel("每平方米价格(元/每平方米)", fontsize=13)
+        axes[0].set_ylabel("房屋面积(平方米)", fontsize=13)
 
         quantiles = self.data["houseArea"].quantile([0.25, 0.75])
         self.data["areaCategory"] = pd.cut(
@@ -168,10 +169,10 @@ class HousingDataVisualize:
         axes[1].set_title(
             "房屋面积 VS 每平方米价格\n——基于%s58二手房数据" %
             CONST_TABLE["CITY"][self.city],
-            fontsize=14
+            fontsize=16
         )   
-        axes[1].set_xlabel("房屋面积(平方米)")
-        axes[1].set_ylabel("房屋总价(万元)")
+        axes[1].set_xlabel("房屋面积(平方米)", fontsize=13)
+        axes[1].set_ylabel("房屋总价(万元)", fontsize=13)
 
         plt.subplots_adjust(wspace=0.3)
         plt.tight_layout()
@@ -214,12 +215,12 @@ class HousingDataVisualize:
         )
         axes[0, 0].set_title(
             '%s卧室数量分布' % CONST_TABLE["CITY"][self.city], 
-            fontsize=14
+            fontsize=16
         )
-        axes[0, 0].set_xlabel('卧室数量(间)', fontsize=12)
-        axes[0, 0].set_ylabel('样本数', fontsize=12)
-        axes[0, 0].xaxis.set_tick_params(labelsize=12)
-        axes[0, 0].yaxis.set_tick_params(labelsize=12)
+        axes[0, 0].set_xlabel('卧室数量(间)', fontsize=13)
+        axes[0, 0].set_ylabel('样本数', fontsize=13)
+        axes[0, 0].xaxis.set_tick_params(labelsize=13)
+        axes[0, 0].yaxis.set_tick_params(labelsize=13)
 
         # ------ 房间数量分布 ------ #
         sns.histplot(
@@ -229,12 +230,12 @@ class HousingDataVisualize:
         )
         axes[0, 1].set_title(
             '%s房间数量分布' % CONST_TABLE["CITY"][self.city], 
-            fontsize=14
+            fontsize=16
         )
-        axes[0, 1].set_xlabel('房间数量(间)', fontsize=12)
-        axes[0, 1].set_ylabel('样本数', fontsize=12)
-        axes[0, 1].xaxis.set_tick_params(labelsize=12)
-        axes[0, 1].yaxis.set_tick_params(labelsize=12)
+        axes[0, 1].set_xlabel('房间数量(间)', fontsize=13)
+        axes[0, 1].set_ylabel('样本数', fontsize=13)
+        axes[0, 1].xaxis.set_tick_params(labelsize=13)
+        axes[0, 1].yaxis.set_tick_params(labelsize=13)
 
         # ------ 房子朝向分布 ------ #
         sns.countplot(
@@ -243,10 +244,10 @@ class HousingDataVisualize:
         )
         axes[1, 0].set_title(
             '%s房子朝向分布' % CONST_TABLE["CITY"][self.city], 
-            fontsize=14
+            fontsize=16
         )
-        axes[1, 0].set_xlabel('房子朝向', fontsize=12)
-        axes[1, 0].set_ylabel('样本数', fontsize=12)
+        axes[1, 0].set_xlabel('房子朝向', fontsize=13)
+        axes[1, 0].set_ylabel('样本数', fontsize=13)
         axes[1, 0].xaxis.set_tick_params(labelsize=12)
         axes[1, 0].yaxis.set_tick_params(labelsize=12)
 
@@ -257,12 +258,12 @@ class HousingDataVisualize:
         )
         axes[1, 1].set_title(
             '%s房屋年龄分布' % CONST_TABLE["CITY"][self.city], 
-            fontsize=14
+            fontsize=16
         )
-        axes[1, 1].set_xlabel('房屋年龄（年）', fontsize=12)
-        axes[1, 1].set_ylabel('样本数', fontsize=12)
-        axes[1, 1].xaxis.set_tick_params(labelsize=12)
-        axes[1, 1].yaxis.set_tick_params(labelsize=12)
+        axes[1, 1].set_xlabel('房屋年龄（年）', fontsize=13)
+        axes[1, 1].set_ylabel('样本数', fontsize=13)
+        axes[1, 1].xaxis.set_tick_params(labelsize=13)
+        axes[1, 1].yaxis.set_tick_params(labelsize=13)
 
         plt.tight_layout()
         if is_save:
@@ -310,10 +311,10 @@ class HousingDataVisualize:
         axes[0].set_title(
             "每平方米房价 VS 房龄\n——基于%s58二手房数据" % 
             CONST_TABLE["CITY"][self.city], 
-            fontsize=14
+            fontsize=16
         )
-        axes[0].set_xlabel("房龄(年)", fontsize=12)
-        axes[0].set_ylabel("每平方米房价(元/平方米)", fontsize=12)
+        axes[0].set_xlabel("房龄(年)", fontsize=13)
+        axes[0].set_ylabel("每平方米房价(元/平方米)", fontsize=13)
 
         self.data.plot(
             kind="scatter", x="houseAge", y="housePrice", alpha=0.6,
@@ -329,10 +330,10 @@ class HousingDataVisualize:
         axes[1].set_title(
             "房屋总价 VS 房龄\n——基于%s58二手房数据" % 
             CONST_TABLE["CITY"][self.city], 
-            fontsize=14
+            fontsize=16
         )
-        axes[1].set_xlabel("房龄(年)", fontsize=12)
-        axes[1].set_ylabel("房屋总价(万元)", fontsize=12)
+        axes[1].set_xlabel("房龄(年)", fontsize=13)
+        axes[1].set_ylabel("房屋总价(万元)", fontsize=13)
 
         plt.tight_layout()
         if is_save:

@@ -83,10 +83,10 @@ class HousingDataExploratoryAnalysis:
         sns.heatmap(data.corr(), annot=True, fmt=".2f", cmap="Blues", ax=ax)
         ax.set_title(
             "相关系数矩阵\n——%s房价数据"%CONST_TABLE["CITY"][self.city], 
-            fontsize=20
+            fontsize=16
         )
-        plt.xticks(rotation=45, fontsize=12)
-        plt.yticks(rotation=0, fontsize=12)
+        plt.xticks(rotation=45, fontsize=14)
+        plt.yticks(rotation=0, fontsize=14)
         plt.tight_layout()
         if is_save:
             path = FiguresIO.getFigureSavePath(
@@ -119,10 +119,10 @@ class HousingDataExploratoryAnalysis:
         )
         ax.vlines(x=0, ymin=0, ymax=len(data.corr()["housePrice"]),
                    color="lightskyblue", linestyles="dashed")
-        ax.set_xlabel("相关性", fontsize=12)
+        ax.set_xlabel("相关性", fontsize=14)
         ax.set_title(
             "变量之间的相关性\n——基于%s的数据"%CONST_TABLE["CITY"][self.city], 
-            fontsize=14
+            fontsize=16
         )
         plt.tight_layout()
         if is_save:
@@ -175,16 +175,16 @@ class HousingDataExploratoryAnalysis:
         )
         axes[0, 0].set_title(
             "房子朝向\n——基于%s58二手房数据"%CONST_TABLE["CITY"][self.city],
-            fontsize=14
+            fontsize=16
         )
         axes[0, 0].xaxis.set_tick_params(labelsize=12)
         axes[0, 0].yaxis.set_tick_params(labelsize=12)
-        axes[0, 0].set_xlabel("朝向", fontsize=12)
-        axes[0, 0].set_ylabel("样本数", fontsize=12)
+        axes[0, 0].set_xlabel("朝向", fontsize=14)
+        axes[0, 0].set_ylabel("样本数", fontsize=14)
         axes[1, 0].xaxis.set_tick_params(labelsize=12)
         axes[1, 0].yaxis.set_tick_params(labelsize=12)
-        axes[1, 0].set_xlabel("朝向", fontsize=12)
-        axes[1, 0].set_ylabel("房价", fontsize=12)
+        axes[1, 0].set_xlabel("朝向", fontsize=14)
+        axes[1, 0].set_ylabel("房价", fontsize=14)
 
         # ------ 房子房间数量(houseRoom) ------ #
         sns.countplot(
@@ -203,16 +203,16 @@ class HousingDataExploratoryAnalysis:
         )
         axes[0, 1].set_title(
             "房间数量\n——基于%s58二手房数据"%CONST_TABLE["CITY"][self.city],
-            fontsize=14
+            fontsize=16
         )
         axes[0, 1].xaxis.set_tick_params(labelsize=12)
         axes[0, 1].yaxis.set_tick_params(labelsize=12)
-        axes[0, 1].set_xlabel("房间数量", fontsize=12)
-        axes[0, 1].set_ylabel("样本数", fontsize=12)
+        axes[0, 1].set_xlabel("房间数量", fontsize=14)
+        axes[0, 1].set_ylabel("样本数", fontsize=14)
         axes[1, 1].xaxis.set_tick_params(labelsize=12)
         axes[1, 1].yaxis.set_tick_params(labelsize=12)
-        axes[1, 1].set_xlabel("房间数量", fontsize=12)
-        axes[1, 1].set_ylabel("房价", fontsize=12)
+        axes[1, 1].set_xlabel("房间数量", fontsize=14)
+        axes[1, 1].set_ylabel("房价", fontsize=14)
 
         # ------ 房子卧室数量(houseBedroom) ------ #
         sns.countplot(
@@ -224,16 +224,16 @@ class HousingDataExploratoryAnalysis:
         )
         axes[0, 2].set_title(
             "卧室数量\n——基于%s58二手房数据"%CONST_TABLE["CITY"][self.city],
-            fontsize=14
+            fontsize=16
         )
         axes[0, 2].xaxis.set_tick_params(labelsize=12)
         axes[0, 2].yaxis.set_tick_params(labelsize=12)
-        axes[0, 2].set_xlabel("卧室数量", fontsize=12)
-        axes[0, 2].set_ylabel("样本数", fontsize=12)
+        axes[0, 2].set_xlabel("卧室数量", fontsize=14)
+        axes[0, 2].set_ylabel("样本数", fontsize=14)
         axes[1, 2].xaxis.set_tick_params(labelsize=12)
         axes[1, 2].yaxis.set_tick_params(labelsize=12)
-        axes[1, 2].set_xlabel("卧室数量", fontsize=12)
-        axes[1, 2].set_ylabel("房价", fontsize=12)
+        axes[1, 2].set_xlabel("卧室数量", fontsize=14)
+        axes[1, 2].set_ylabel("房价", fontsize=14)
 
         plt.tight_layout()
         if is_save:
@@ -272,7 +272,7 @@ class HousingDataExploratoryAnalysis:
         axes[0, 0].set_title(
             "经度(longitude)\n——基于%s58二手房数据" % 
             CONST_TABLE["CITY"][self.city], 
-            fontsize=14
+            fontsize=16
         )
         axes[0, 0].xaxis.set_tick_params(labelsize=12)
         axes[0, 0].yaxis.set_tick_params(labelsize=12)
@@ -285,7 +285,7 @@ class HousingDataExploratoryAnalysis:
         axes[1, 0].set_title(
             "纬度(latitude)\n——基于%s58二手房数据" % 
             CONST_TABLE["CITY"][self.city], 
-            fontsize=14
+            fontsize=16
         )
         axes[1, 0].xaxis.set_tick_params(labelsize=12)
         axes[1, 0].yaxis.set_tick_params(labelsize=12)
@@ -298,7 +298,7 @@ class HousingDataExploratoryAnalysis:
         axes[0, 1].set_title(
             "每平方米价格(unitPrice)\n——基于%s58二手房数据" % 
             CONST_TABLE["CITY"][self.city], 
-            fontsize=14
+            fontsize=16
         )
         axes[0, 1].xaxis.set_tick_params(labelsize=12)
         axes[0, 1].yaxis.set_tick_params(labelsize=12)
@@ -311,7 +311,7 @@ class HousingDataExploratoryAnalysis:
         axes[1, 1].set_title(
             "总价(housePrice)\n——基于%s58二手房数据" % 
             CONST_TABLE["CITY"][self.city], 
-            fontsize=14
+            fontsize=16
         )
         axes[1, 1].xaxis.set_tick_params(labelsize=12)
         axes[1, 1].yaxis.set_tick_params(labelsize=12)
@@ -324,7 +324,7 @@ class HousingDataExploratoryAnalysis:
         axes[0, 2].set_title(
             "房子面积(houseArea)\n——基于%s58二手房数据" % 
             CONST_TABLE["CITY"][self.city], 
-            fontsize=14
+            fontsize=16
         )
         axes[0, 2].xaxis.set_tick_params(labelsize=12)
         axes[0, 2].yaxis.set_tick_params(labelsize=12)
@@ -337,7 +337,7 @@ class HousingDataExploratoryAnalysis:
         axes[1, 2].set_title(
             "房龄(houseAge)\n——基于%s58二手房数据" % 
             CONST_TABLE["CITY"][self.city], 
-            fontsize=14
+            fontsize=16
         )
         axes[1, 2].xaxis.set_tick_params(labelsize=12)
         axes[1, 2].yaxis.set_tick_params(labelsize=12)
