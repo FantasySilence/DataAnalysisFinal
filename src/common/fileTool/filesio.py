@@ -24,8 +24,10 @@ class FilesIO:
         获取数据集路径用于读取
         """
 
+        # fileTool文件夹所在路径
+        fileTool_path = os.path.dirname(__file__)
         # common文件夹所在路径
-        common_path = os.path.dirname(__file__)
+        common_path = os.path.dirname(fileTool_path)
         # src文件夹所在路径
         src_path = os.path.dirname(common_path)
         # 项目根路径
@@ -50,8 +52,10 @@ class FilesIO:
         获取爬取的html文件路径用于解析
         """
 
+        # fileTool文件夹所在路径
+        fileTool_path = os.path.dirname(__file__)
         # common文件夹所在路径
-        common_path = os.path.dirname(__file__)
+        common_path = os.path.dirname(fileTool_path)
         # src文件夹所在路径
         src_path = os.path.dirname(common_path)
         # 项目根路径

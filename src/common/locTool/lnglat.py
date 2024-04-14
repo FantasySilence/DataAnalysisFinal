@@ -10,7 +10,7 @@
 # ======================================================== #
 import requests
 
-from src.common.coordutils import CoordTransformer
+from coordutils import CoordTransformer
 
 
 class GetLongitudeLatitude:
