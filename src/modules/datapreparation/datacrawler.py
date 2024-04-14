@@ -13,8 +13,8 @@ import random
 import requests
 from lxml import etree
 
-from src.common.filesio import FilesIO
-from src.common.const import CONST_TABLE
+from src.common.fileTool.filesio import FilesIO
+from src.common.infoTool.const import CONST_TABLE
 
 
 class HousingDataSpider:

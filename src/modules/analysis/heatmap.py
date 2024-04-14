@@ -6,9 +6,9 @@ from matplotlib.axes import Axes
 matplotlib.rcParams['font.family'] = 'SimHei'
 matplotlib.rcParams['axes.unicode_minus'] = False
 
-from src.common.const import CONST_TABLE
-from src.common.figuresio import FiguresIO
-from src.common.objectbase import PlotObjectBase
+from src.common.infoTool.const import CONST_TABLE
+from src.common.fileTool.figuresio import FiguresIO
+from src.common.figTool.objectbase import PlotObjectBase
 
 
 class DrawHeatMapWithRelativityAmongVaribles(PlotObjectBase):

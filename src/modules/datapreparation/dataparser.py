@@ -12,9 +12,9 @@ import pandas as pd
 from lxml import etree
 from functools import reduce
 
-from src.common.filesio import FilesIO
-from src.common.const import CONST_TABLE
-from src.common.lnglat import GetLongitudeLatitude
+from src.common.fileTool.filesio import FilesIO
+from src.common.infoTool.const import CONST_TABLE
+from src.common.locTool.lnglat import GetLongitudeLatitude
 
 
 class HousingDataParser:
