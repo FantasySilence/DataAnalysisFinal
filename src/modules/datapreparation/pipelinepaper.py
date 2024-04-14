@@ -64,6 +64,7 @@ class PipeLineForPaperHousingData:
         pipeline_step_2 = ColumnTransformer([
             ("num", num_pipeline, num_attribs),
             ("cat", cat_pipeline, cat_attribs[:-1]),
+            # 对目标值取对数
             ("target", FunctionTransformer(np.log), [cat_attribs[-1]]),
         ])      
         X = pipeline_step_2.fit_transform(X)
