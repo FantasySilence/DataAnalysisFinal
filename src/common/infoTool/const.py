@@ -27,6 +27,9 @@ CONST_TABLE = {
 
     # ------ 解析数据的xpath表达式 ------ #
     "XPATH": {
+        # 信息存储位置的根路径
+        "ROOT_PATH": "//div[@class='property']",
+
         # 用于解析房价的xpath表达式
         "HOUSE_PRICE": "//div[@class='property']//div[2]/div[2]//span[@class='property-price-total-num']/text()",
 
@@ -53,6 +56,12 @@ CONST_TABLE = {
 
         # 用于解析房龄的xpath表达式
         "HOUSE_AGE": "//div[@class='property']//div[2]//section//p[last()]/text()",
+
+        # 用于解析房屋楼层信息的xpath表达式
+        "HOUSE_FLOOR": ".//div[2]//section/div[1]/p[position()>=2]/text()",
+
+        # 用于解析房屋交易信息的tag
+        "HOUSE_TAG": ".//div[2]//section/div[3]/span/text()",
     },
 
     # ------ 城市名称 ------ #
