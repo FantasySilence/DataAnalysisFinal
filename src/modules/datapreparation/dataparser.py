@@ -176,6 +176,110 @@ class HousingDataParser:
         用于解析更多信息的接口
         """
 
+        # ------ 重新读取之前解析好的信息 ------ #
         data = pd.read_csv(FilesIO.getDataset("%s_housing_data.csv" % city))
         
-        pass
+        # ------ 初始化存储爬取信息的列表，便于存入csv ------ #
+        key_house_loc_list = []         # 作为键值用于合并
+        house_subway_list = []          # 存储房子是否临近地铁
+        house_floor_type_list = []      # 存储房子所在楼层高低
+        house_floor_sum_list = []       # 存储房子所在楼层总数
+        house_housing_period_list = []  # 存储房子房本年限
+
+        for i in range(1, 51):
+            # ------ 重新读取html文件 ------ #
+            path = FilesIO.getHTMLtext(
+                "%s_htmls/%s_page_%d.html" % (city, city, i)
+            )
+
+            # ------ 解析存储信息的div标签 ------ #
+            parser = etree.HTMLParser(encoding="utf-8")
+            tree = etree.parse(path, parser=parser)
+            divs = tree.xpath(CONST_TABLE["XPATH"]["ROOT_PATH"])
+
+            # ------ 解析房屋地址信息，并作为键值存储 ------ #
+            community_loc = tree.xpath(CONST_TABLE["XPATH"]["COMMUNITY_LOCATION"])
+            house_loc = tree.xpath(CONST_TABLE["XPATH"]["HOUSE_LOCATION"])
+            house_loc_list = [i.strip() for i in house_loc]
+            i = 2
+            house_loc = []
+            while i < len(house_loc_list):
+                house_loc.append(house_loc_list[i-2] + house_loc_list[i-1] + house_loc_list[i])
+                i += 3
+            for i in range(len(community_loc)):
+                house_loc[i] += community_loc[i]
+            key_house_loc_list.extend(house_loc)
+
+            # ------ 信息存储在房屋信息的tag中，提取这些tag ------ #
+            tag_info = []
+            for div in divs:
+                spans = div.xpath(CONST_TABLE["XPATH"]["HOUSE_TAG"])
+                near_metro = []
+                for span in spans:
+                    near_metro.append("".join(span.split()))
+                tag_info.append(near_metro)
+            
+            # ------ 解析房屋是否近地铁 ------ #
+            is_near_metro = [
+                1 if "近地铁" in item else 0 
+                for item in tag_info
+            ]
+            house_subway_list.extend(is_near_metro)
+
+            # ------ 解析房屋的房本年限 ------ #
+            fangben_info = []
+            for item in tag_info:
+                if "满五年" in item:
+                    fangben_info.append("满五年")
+                elif "满二年" in item:
+                    fangben_info.append("满二年")
+                else:
+                    fangben_info.append(np.nan)
+            house_housing_period_list.extend(fangben_info)
+
+            # ------ 解析房屋的楼层(高中低)与楼层总数 ------ #
+            info_list = []      # 获取存储信息的div标签中的所有文字
+            for div in range(len(divs)):
+                ps = divs[div].xpath(CONST_TABLE["XPATH"]["HOUSE_FLOOR"])
+                sub_info_list = []
+                for text in ps:
+                    sub_info_list.append("".join(text.split()))
+                info_list.append(sub_info_list)
+            
+
+            for item in info_list:
+                try:
+                    # 获取楼层高低以及总层数
+                    if item[2][:2] in ["低层", "中层", "高层"]:
+                        house_floor_type_list.append(item[2][:2])
+                        house_floor_sum_list.append(
+                            int("".join([i for i in item[2] if i.isdigit()]))
+                        )
+                    else:
+                        # 楼层高低可能缺失
+                        house_floor_type_list.append(np.nan)
+                        house_floor_sum_list.append(
+                            int("".join([i for i in item[2] if i.isdigit()]))
+                        )
+                # 楼层高低可能缺失，总层数也可能缺失
+                except IndexError:
+                    house_floor_type_list.append(np.nan)
+                    house_floor_sum_list.append(np.nan)
+        
+        # ------ 与data合并重新储存 ------ #
+        # 临时创建DataFrame存储
+        df = pd.DataFrame({
+            "houseLoc": key_house_loc_list, "houseSubway": house_subway_list,
+            "houseHousingPeriod": house_housing_period_list,
+            "houseFloorType": house_floor_type_list, 
+            "houseFloorSum": house_floor_sum_list
+        })
+        df.drop_duplicates(inplace=True, subset=["houseLoc"], keep="first")
+        
+        # 以houseLoc为键值进行合并
+        res = pd.merge(data, df, on="houseLoc")
+        res.to_csv(
+            FilesIO.getDataset("%s_housing_data.csv" % city), 
+            index=False, encoding="utf-8-sig"
+        )
+        
