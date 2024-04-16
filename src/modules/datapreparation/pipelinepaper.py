@@ -7,8 +7,10 @@
 # Description:                                      #
 # A pipeline for preprocessing the paper dataset    #
 # ================================================= #
+import os
 import numpy as np
 import pandas as pd
+from typing import Literal
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 from sklearn.compose import ColumnTransformer
@@ -17,6 +19,8 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import FunctionTransformer
 from sklearn.base import BaseEstimator, TransformerMixin
 
+from src.common.fileTool.filesio import FilesIO
+
 
 class PipeLineForPaperHousingData:
 
@@ -24,9 +28,14 @@ class PipeLineForPaperHousingData:
     实现论文中提到的数据的预处理流程
     """
 
-    def __init__(self, is_drop: bool=True, is_replace: bool=True) -> None:
+    def __init__(
+            self,file_name: Literal["train", "test"]="train",
+            is_drop: bool=True, is_replace: bool=True, is_save: bool=False, 
+    ) -> None:
         
+        self.is_save = is_save
         self.is_drop = is_drop
+        self.file_name = file_name
         self.is_replace = is_replace
 
     
@@ -71,6 +80,24 @@ class PipeLineForPaperHousingData:
 
         # ------ 第四步，以DataFrame的形式输出 ------ #
         X_df = pd.DataFrame(X, columns=num_attribs + cat_attribs)
+
+        # ------ 第五步，持久化存储 ------ #
+        if self.is_save:
+            # 创建存放数据的文件夹
+            folder_name = "house-prices-advanced-regression-techniques"
+            data_folder = os.path.join(FilesIO.getDataset(), folder_name)
+            if not os.path.exists(data_folder):
+                os.mkdir(data_folder)
+            else:
+                pass
+
+            # 以csv形式存储
+            X_df.to_csv(
+                FilesIO.getDataset(
+                    "%s/%s_housing_data_processed.csv" % 
+                    (folder_name, self.file_name)
+                ), index=False, encoding="utf-8-sig"
+            )
         return X_df
     
 
