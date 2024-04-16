@@ -41,7 +41,7 @@ class PlotObjectBase:
         # ------ 尝试读取数据 ------ #
         try:
             self.data = pd.read_csv(FilesIO.getDataset(
-                "%s_housing_data.csv" % self.city
+                "row_data/%s_housing_data.csv" % self.city
             ))
         except:
             self.data = None

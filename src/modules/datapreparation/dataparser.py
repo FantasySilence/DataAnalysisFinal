@@ -7,6 +7,7 @@
 # @Description:                             #
 # This module is used for parsing HTML data #
 # ========================================= #
+import os
 import numpy as np
 import pandas as pd
 from lxml import etree
@@ -56,10 +57,19 @@ class HousingDataParser:
         self._parse_data()
         self._parse_loc_to_lnglat()
 
+        # ------ 创建存放数据的文件夹 ------ #
+        folder_name = "rowdata"
+        data_folder = os.path.join(FilesIO.getDataset(), folder_name)
+        if not os.path.exists(data_folder):
+            os.mkdir(data_folder)
+        else:
+            pass
+
         # ------ 存入csv文件中 ------ #
         self.df.to_csv(
-            FilesIO.getDataset("%s_housing_data.csv" % self.city),
-            index=False, encoding="utf-8-sig"
+            FilesIO.getDataset(
+                "%s/%s_housing_data.csv" % (folder_name, self.city)
+            ), index=False, encoding="utf-8-sig"
         )
     
 
@@ -177,7 +187,9 @@ class HousingDataParser:
         """
 
         # ------ 重新读取之前解析好的信息 ------ #
-        data = pd.read_csv(FilesIO.getDataset("%s_housing_data.csv" % city))
+        data = pd.read_csv(FilesIO.getDataset(
+            "row_data/%s_housing_data.csv" % city
+        ))
         
         # ------ 初始化存储爬取信息的列表，便于存入csv ------ #
         key_house_loc_list = []         # 作为键值用于合并
