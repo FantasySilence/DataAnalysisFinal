@@ -23,7 +23,7 @@ from src.common.fileTool.filesio import FilesIO
 from src.common.infoTool.const import CONST_TABLE
 
 
-class PipeLineFor58HousingData:
+class PipeLineFor58HousingData(BaseEstimator, TransformerMixin):
 
     """
     设计实现58同城房价数据的特征工程
@@ -37,7 +37,11 @@ class PipeLineFor58HousingData:
         else:
             print("ERROR: City name required...")
             exit(1)
-        
+    
+
+    def fit(self, X, y=None):
+        return self
+
 
     def transform(self, X: pd.DataFrame) -> pd.DataFrame:
 
@@ -75,7 +79,7 @@ class PipeLineFor58HousingData:
             "houseBedroom", "houseRoom", "houseSubway", "houseOrientation",
             "houseHousingPeriod", "houseFloorType"
         ]
-        log_attribs = ["unitPrice", "housePrice"]
+        log_attribs = ["unitPrice"]
 
         # ------ 第三步，整合为一个管道 ------ #
         pipeline_step_2 = ColumnTransformer([
@@ -134,6 +138,8 @@ class DistanceToCityCenter(BaseEstimator, TransformerMixin):
             CONST_TABLE["CITY_CENTER"][self.city_name]["LAT"],
             CONST_TABLE["CITY_CENTER"][self.city_name]["LNG"]
         )
+        X.dropna(subset=["latitude", "longitude"], inplace=True)
+        X.reset_index(drop=True, inplace=True)
         for i in range(len(X)):
             loc = (X.loc[i, "latitude"], X.loc[i, "longitude"])
             distance = geodesic(loc, city_center_location).kilometers
@@ -153,7 +159,7 @@ class DropColumns(BaseEstimator, TransformerMixin):
         某些列中NA并不代表缺失值，替换为None
         """
 
-        cols_to_drop = ["ID", "houseLoc"]
+        cols_to_drop = ["ID", "houseLoc", "housePrice"]
         X = X.drop(columns=cols_to_drop)
         return X
 
@@ -176,3 +182,13 @@ class ReplaceNAtoNone(BaseEstimator, TransformerMixin):
 
         X["houseHousingPeriod"].fillna("None", inplace=True)
         return X
+
+
+class AddColumns(BaseEstimator, TransformerMixin):
+
+    """
+    数据处理模块——添加新的列
+    TODO：添加关于地区的虚拟变量，考虑添加城市特征信息例如GDP等
+    """
+
+    pass
