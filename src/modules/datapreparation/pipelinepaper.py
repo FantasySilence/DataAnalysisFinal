@@ -22,7 +22,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from src.common.fileTool.filesio import FilesIO
 
 
-class PipeLineForPaperHousingData:
+class PipeLineForPaperHousingData(BaseEstimator, TransformerMixin):
 
     """
     实现论文中提到的数据的预处理流程
@@ -37,6 +37,10 @@ class PipeLineForPaperHousingData:
         self.is_drop = is_drop
         self.file_name = file_name
         self.is_replace = is_replace
+    
+
+    def fit(self, X, y=None):
+        return self
 
     
     def transform(self, X: pd.DataFrame) -> pd.DataFrame:
