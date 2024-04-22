@@ -87,7 +87,7 @@ class PipeLineFor58HousingData(BaseEstimator, TransformerMixin):
             ("cat", cat_pipeline, cat_attribs),
             # 对房价和单位房价取对数
             ("target", FunctionTransformer(np.log), log_attribs),
-        ])      
+        ]) 
         X = pipeline_step_2.fit_transform(X)
 
         # ------ 第四步，以DataFrame的形式输出 ------ #
@@ -182,13 +182,3 @@ class ReplaceNAtoNone(BaseEstimator, TransformerMixin):
 
         X["houseHousingPeriod"].fillna("None", inplace=True)
         return X
-
-
-class AddColumns(BaseEstimator, TransformerMixin):
-
-    """
-    数据处理模块——添加新的列
-    TODO：添加关于地区的虚拟变量，考虑添加城市特征信息例如GDP等
-    """
-
-    pass
