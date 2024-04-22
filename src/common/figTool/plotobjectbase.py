@@ -1,3 +1,11 @@
+# ====================================================================== #
+# @Author: Fantasy_Silence                                               #
+# @Time: 2024-04-22                                                      #
+# @IDE: Visual Studio Code & PyCharm                                     #
+# @Python: 3.9.7                                                         #
+# ====================================================================== #
+# @Description: Object base class for Various visualizations of data     #
+# ====================================================================== #
 import os
 import pandas as pd
 
