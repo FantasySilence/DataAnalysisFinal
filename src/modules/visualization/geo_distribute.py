@@ -8,7 +8,7 @@ matplotlib.rcParams['axes.unicode_minus'] = False
 from src.common.figTool.dataonmap import map_plot
 from src.common.infoTool.const import CONST_TABLE
 from src.common.fileTool.figuresio import FiguresIO
-from src.common.figTool.objectbase import PlotObjectBase
+from src.common.figTool.plotobjectbase import PlotObjectBase
 
 
 class DrawGeoDistribution(PlotObjectBase):
