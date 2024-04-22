@@ -67,17 +67,19 @@ class PipeLineFor58HousingData(BaseEstimator, TransformerMixin):
         cat_pipeline = Pipeline([
             # 填充缺失值，填充策略为以出现次数最多的类别填充
             ("imputer", SimpleImputer(strategy="most_frequent")),
-            # 对分类变量编码
-            ("onehot_encoder", OrdinalEncoder()),
+            # 对部分分类变量编码
+            ("ordinal_encoder", OrdinalEncoder()),
         ])      # 分类变量处理
 
+        dummy_attribs = [
+            "houseOrientation", "houseHousingPeriod", "houseFloorType"
+        ]
         num_attribs = [
             "longitude", "latitude", "houseArea", "houseAge", 
             "houseFloorSum", "distance"
         ]
         cat_attribs = [
-            "houseBedroom", "houseRoom", "houseSubway", "houseOrientation",
-            "houseHousingPeriod", "houseFloorType"
+            "houseBedroom", "houseRoom", "houseSubway"
         ]
         log_attribs = ["unitPrice"]
 
@@ -85,13 +87,21 @@ class PipeLineFor58HousingData(BaseEstimator, TransformerMixin):
         pipeline_step_2 = ColumnTransformer([
             ("num", num_pipeline, num_attribs),
             ("cat", cat_pipeline, cat_attribs),
+            ("dummy", "passthrough", dummy_attribs),
             # 对房价和单位房价取对数
             ("target", FunctionTransformer(np.log), log_attribs),
         ]) 
         X = pipeline_step_2.fit_transform(X)
 
-        # ------ 第四步，以DataFrame的形式输出 ------ #
-        X_df = pd.DataFrame(X, columns=num_attribs + cat_attribs + log_attribs)
+        # ------ 第四步，以DataFrame的形式输出，并对剩余分类变量编码 ------ #
+        X_df = pd.DataFrame(
+            X, columns=num_attribs + cat_attribs + dummy_attribs + log_attribs
+        )
+        X_df_dummy = pd.get_dummies(X_df[dummy_attribs], drop_first=True)
+        target = X_df["unitPrice"]
+        X_df.drop(dummy_attribs + ["unitPrice"], axis=1, inplace=True)
+        X_df = pd.concat([X_df, X_df_dummy], axis=1)
+        X_df["unitPrice"] = target
 
         # ------ 第五步，持久化存储 ------ #
         if self.is_save:
