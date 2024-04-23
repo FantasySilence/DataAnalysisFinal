@@ -1,11 +1,11 @@
-# ========================================== #
-# @Author: Fantasy_Silence                   #
-# @Time: 2024-04-23                          #
-# @IDE: Visual Studio Code & PyCharm         #
-# @Python: 3.9.7                             #
-# ========================================== #
-# @Description: Used to draw PR curve        #
-# ========================================== #
+# =================================================== #
+# @Author: Fantasy_Silence                            #
+# @Time: 2024-04-23                                   #
+# @IDE: Visual Studio Code & PyCharm                  #
+# @Python: 3.9.7                                      #
+# =================================================== #
+# @Description: Used to draw PR_tradeoff curve        #
+# =================================================== #
 import matplotlib
 import numpy as np
 import matplotlib.pyplot as plt
@@ -20,7 +20,7 @@ from src.common.fileTool.figuresio import FiguresIO
 from src.common.figTool.evaluateobjectbase import EvaluateObjectBase
 
 
-class PRCurve(EvaluateObjectBase):
+class PRTradeOffCurve(EvaluateObjectBase):
     
     """
     绘制PR曲线
@@ -127,8 +127,8 @@ class PRCurve(EvaluateObjectBase):
             )
         self.ax.set_xlabel('Thresholds', fontsize=14)
         self.ax.set_ylabel('Precision/Recall', fontsize=14)
-        self.ax.set_title('PR Curve', fontsize=16)
-        self.ax.grid(":")
+        self.ax.set_title('PR TradeOff Curve', fontsize=16)
+        self.ax.grid(ls=":")
         self.ax.legend(loc='best')
         self.ax.set_xlim(0, 1)
         self.ax.set_ylim(0, 1.05)
@@ -178,8 +178,8 @@ class PRCurve(EvaluateObjectBase):
             )
         self.ax.set_xlabel('Thresholds', fontsize=14)
         self.ax.set_ylabel('Precision/Recall', fontsize=14)
-        self.ax.set_title('PR Curve', fontsize=16)
-        self.ax.grid(":")
+        self.ax.set_title('PR TradeOff Curve', fontsize=16)
+        self.ax.grid(ls=":")
         self.ax.legend(loc='best')
         self.ax.set_xlim(0, 1)
         self.ax.set_ylim(0, 1.05)
