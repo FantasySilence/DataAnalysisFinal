@@ -11,7 +11,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from typing import Literal, Sequence
 from sklearn.preprocessing import label_binarize
-from sklearn.metrics import precision_recall_curve
+from sklearn.metrics import f1_score, precision_recall_curve
 
 matplotlib.rcParams['font.sans-serif'] = ['STsong']
 matplotlib.rcParams['axes.unicode_minus'] = False
@@ -23,14 +23,14 @@ from src.common.figTool.evaluateobjectbase import EvaluateObjectBase
 class PRCurve(EvaluateObjectBase):
     
     """
-    TODO: 实现寻找最佳的Precision和Recall并在图形显示F1_score
+    TODO: 实现寻找最佳的Precision和Recall
     绘制PR曲线
     """
 
     def __init__(
             self, y_true: Sequence, y_score: Sequence,
             is_show_alone: bool=True, is_show: bool=True, is_save: bool=False,
-            ax: plt.Axes=None, fig_name: str=None,
+            ax: plt.Axes=None, fig_name: str=None, label: str=None,
             avg_method: Literal["macro", "micro"]="macro"
     ) -> None:
         
@@ -50,6 +50,7 @@ class PRCurve(EvaluateObjectBase):
 
         self.y_true = np.asarray(y_true, dtype=np.int64)
         self.y_score = np.asarray(y_score, dtype=np.float64)
+        self.label = label  
         self.avg_method = avg_method
         self.n_samples, self.n_class = self.y_score.shape
         self.draw()
@@ -61,6 +62,8 @@ class PRCurve(EvaluateObjectBase):
         if self.avg_method == "micro":
 
             # 合并所有类的预测概率和真实标签
+            y_pred = np.argmax(self.y_score, axis=1)
+            f1_scores = f1_score(self.y_true, y_pred, average="micro")
             self.y_true = label_binarize(self.y_true, classes=np.unique(self.y_true)).ravel()
             self.y_score = self.y_score.ravel()
 
@@ -70,8 +73,24 @@ class PRCurve(EvaluateObjectBase):
             # 绘制Precision和Recall随Thresholds变化的曲线
             if self.is_show_alone:
                 _, self.ax = plt.subplots(figsize=(12, 8), dpi=100, facecolor="w")
-            self.ax.plot(thresholds, precision[:-1], 'b--', label='Precision')
-            self.ax.plot(thresholds, recall[:-1], 'g-', label='Recall')
+            if self.label is not None:
+                self.ax.plot(
+                    thresholds, precision[:-1], 'b--', 
+                    label='%s Precision(F1_score: %.4f)' % (self.label, f1_scores)
+                )
+                self.ax.plot(
+                    thresholds, recall[:-1], 'g-', 
+                    label='%s Recall(F1_score: %.4f)' % (self.label, f1_scores)
+                )
+            else:
+                self.ax.plot(
+                    thresholds, precision[:-1], 'b--', 
+                    label='Precision(F1_score: %.4f)' % f1_scores
+                )
+                self.ax.plot(
+                    thresholds, recall[:-1], 'g-', 
+                    label='Recall(F1_score: %.4f)' % f1_scores
+                )
             self.ax.set_xlabel('Thresholds', fontsize=14)
             self.ax.set_ylabel('Precision/Recall', fontsize=14)
             self.ax.set_title('PR Curve', fontsize=16)
@@ -82,6 +101,8 @@ class PRCurve(EvaluateObjectBase):
 
         # ------ 宏平均 ------ #
         elif self.avg_method == "macro":
+            y_pred = np.argmax(self.y_score, axis=1)
+            f1_scores = f1_score(self.y_true, y_pred, average="macro")
             precision_avg, recall_avg = [], []
 
             # 遍历每个类别，计算Precision和Recall
@@ -98,8 +119,24 @@ class PRCurve(EvaluateObjectBase):
             # 绘制Precision和Recall随Thresholds变化的曲线
             if self.is_show_alone:
                 _, self.ax = plt.subplots(figsize=(12, 8), dpi=100, facecolor="w")
-            self.ax.plot(thresholds_macro, precision_macro, 'b--', label='Precision')
-            self.ax.plot(thresholds_macro, recall_macro, 'g-', label='Recall')
+            if self.label is not None:
+                self.ax.plot(
+                    thresholds_macro, precision_macro, 'b--', 
+                    label='%s Precision(F1_score: %.4f)' % (self.label, f1_scores)
+                )
+                self.ax.plot(
+                    thresholds_macro, recall_macro, 'g-', 
+                    label='%s Recall(F1_score: %.4f)' % (self.label, f1_scores)
+                )
+            else:
+                self.ax.plot(
+                    thresholds_macro, precision_macro, 'b--', 
+                    label='Precision(F1_score: %.4f)' % f1_scores
+                )
+                self.ax.plot(
+                    thresholds_macro, recall_macro, 'g-', 
+                    label='Recall(F1_score: %.4f)' % f1_scores
+                )
             self.ax.set_xlabel('Thresholds', fontsize=14)
             self.ax.set_ylabel('Precision/Recall', fontsize=14)
             self.ax.set_title('PR Curve', fontsize=16)
