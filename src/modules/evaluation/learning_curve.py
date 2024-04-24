@@ -80,7 +80,6 @@ class LearningCurve(EvaluateObjectBase):
         )
 
         self.ax.set_xlabel("Training examples", fontsize=12)
-        self.ax.set_title("Learning Curve", fontsize=14)
         self.ax.set_ylabel("Score", fontsize=12)
         self.ax.legend(loc='best')
         self.ax.grid(ls=":")
@@ -100,4 +99,5 @@ class LearningCurve(EvaluateObjectBase):
             plt.savefig(path, dpi=300)
         
         if self.is_show and self.is_show_alone:
+            self.ax.set_title("Learning Curve", fontsize=14)
             plt.show()
