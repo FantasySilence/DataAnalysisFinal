@@ -69,6 +69,7 @@ class PRCurve(EvaluateObjectBase):
             self.ax.step(
                 pr_array[:, 0], pr_array[:, 1], "-", where="post", lw=2
             )
+        self.ax.set_title("PR Curve(AP=%.5f)"%ap, fontdict={"fontsize":14})
         self.ax.set_xlabel("Recall", fontdict={"fontsize":12})
         self.ax.set_ylabel("Precision", fontdict={"fontsize":12})
         self.ax.grid(ls=":")
@@ -76,9 +77,6 @@ class PRCurve(EvaluateObjectBase):
         self.ax.set_ylim(0, 1.05)
         plt.legend(frameon=True,fontsize=12,loc="lower right")
         plt.tight_layout()
-        if self.is_show_alone and self.is_show:
-            self.ax.set_title("PR Curve(AP=%.5f)"%ap, fontdict={"fontsize":14})
-            plt.show()
 
         # ------ 存储图片 ------ #
         if self.is_save:
@@ -92,7 +90,7 @@ class PRCurve(EvaluateObjectBase):
                 )
             plt.savefig(path, dpi=300)
 
-        if self.is_show and self.is_show_alone:
+        if self.is_show_alone and self.is_show:
             plt.show()
 
 
