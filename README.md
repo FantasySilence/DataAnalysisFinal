@@ -5,7 +5,7 @@
 
 > 非常建议使用vscode打开本项目，不过得确定你已经在vscode中配置好Python以及Jupyter notebook的环境
 
-1.(如果有git的话)打开Git Bash，输入git clone git@github.com:FantasySilence/DataAnalysisFinal.git，获取项目源代码。
+1.(如果有git的话)打开Git Bash，输入`git clone git@github.com:FantasySilence/DataAnalysisFinal.git`，获取项目源代码。
 
 2.在vscode中打开对应文件夹，然后右键点击文件夹，选择"在集成终端中打开"。
 
