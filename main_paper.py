@@ -54,7 +54,7 @@ X_test = X_test.drop(
 end_time = time.time()
 print(
     "完成'读取数据并处理', 用时%.3fms" % 
-    ((end_time - start_time) * 1000) , end="\n\n"
+    ((end_time - start_time) * 1000), end="\n\n"
 )
 
 # ==========
@@ -92,7 +92,7 @@ print(
 end_time = time.time()
 print(
     "完成'计算文中提到的相关系数', 用时%.3fms" % 
-    ((end_time - start_time) * 1000) , end="\n\n"
+    ((end_time - start_time) * 1000), end="\n\n"
 )
 
 # ==========
@@ -142,7 +142,7 @@ top30 = list(X_train.columns[
 end_time = time.time()
 print(
     "完成'训练决策树回归模型', 用时%.3fms" % 
-    ((end_time - start_time) * 1000) , end="\n\n"
+    ((end_time - start_time) * 1000), end="\n\n"
 )
 
 # ==========
@@ -153,7 +153,7 @@ print("3.绘制决策树回归模型的学习曲线")
 print("=" * 50)
 start_time = time.time()
 cv = KFold(n_splits=5, shuffle=True, random_state=42)
-fig, ax = plt.subplots(figsize=(12, 8), dpi=100)
+_, ax = plt.subplots(figsize=(12, 8), dpi=100)
 LearningCurve(
     rf_model_paper, X_train, y_train, cv=cv,
     train_sizes=np.linspace(0.1, 1.0, 10),
@@ -165,7 +165,7 @@ plt.show()
 end_time = time.time()
 print(
     "完成'绘制决策树回归模型的学习曲线', 用时%.3fms" % 
-    ((end_time - start_time) * 1000) , end="\n\n"
+    ((end_time - start_time) * 1000), end="\n\n"
 )
 
 # ==========
@@ -214,7 +214,7 @@ FeatureImportance(
 end_time = time.time()
 print(
     "完成'训练XGBoost回归模型', 用时%.3fms" % 
-    ((end_time - start_time) * 1000) , end="\n\n"
+    ((end_time - start_time) * 1000), end="\n\n"
 )
 
 # ==========
@@ -225,7 +225,7 @@ print("5.绘制XGBoost回归模型的学习曲线")
 print("=" * 50)
 start_time = time.time()
 cv = KFold(n_splits=5, shuffle=True, random_state=42)
-fig, ax = plt.subplots(figsize=(12, 8), dpi=100)
+_, ax = plt.subplots(figsize=(12, 8), dpi=100)
 LearningCurve(
     xgb_model_paper_best, X_train_top30, y_train, cv=cv,
     train_sizes=np.linspace(0.1, 1.0, 10),
@@ -237,7 +237,7 @@ plt.show()
 end_time = time.time()
 print(
     "完成'绘制XGBoost回归模型的学习曲线', 用时%.3fms" % 
-    ((end_time - start_time) * 1000) , end="\n\n"
+    ((end_time - start_time) * 1000), end="\n\n"
 )
 
 # ==========
@@ -312,5 +312,5 @@ LearningCurve(clf_xgb, X_train, y_train, cv=cv, scoring="accuracy")
 end_time = time.time()
 print(
     "完成'更换目标变量，并训练XGBClassifier', 用时%.3fms" % 
-    ((end_time - start_time) * 1000) , end="\n\n"
+    ((end_time - start_time) * 1000), end="\n\n"
 )
