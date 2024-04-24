@@ -20,6 +20,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split, ShuffleSplit
 
 from src.common.fileTool.filesio import FilesIO
+from src.common.modelTool.modelsio import ModelsIO
 from src.common.modelTool.split import TargetVaribleSplit
 from src.modules.evaluation.pr_tradeoff import PRTradeOffCurve
 from src.modules.evaluation.learning_curve import LearningCurve
@@ -97,6 +98,23 @@ print(
 # ==========
 # 2.训练决策树回归模型
 # ==========
+# Warning: This is a very long process.
+# # RF_Regressor网格搜索
+# from sklearn.model_selection import GridSearchCV
+# from sklearn.ensemble import RandomForestRegressor
+# param_grid_rf_regressor = {
+#     "n_estimators": [100, 200, 300, 400, 500],
+#     "max_features": [0.2, 0.4, 0.6, 0.8, 1],
+#     "max_samples": [0.2, 0.4, 0.6, 0.8, 1],
+#     "criterion": ['squared_error', 'absolute_error', 'friedman_mse', 'poisson'],
+# }
+# rf_grid_regressor = GridSearchCV(
+#     estimator=RandomForestRegressor(), param_grid=param_grid_rf_regressor, 
+#     cv=5, n_jobs=-1
+# )
+# rf_grid_regressor.fit(X_train, y_train)
+# print(rf_grid_regressor.best_params_)
+
 print("=" * 50)
 print("2.训练决策树回归模型")
 print("=" * 50)
@@ -110,6 +128,9 @@ y_pred = rf_model_paper.predict(X_test)
 
 print("MSE(RandomForestRegressor):", mean_squared_error(y_test, y_pred))
 print("R2(RandomForestRegressor):", r2_score(y_test, y_pred))
+
+# 保存模型
+ModelsIO.saveModel(rf_model_paper, "rf_regressor_paper.pkl")
 
 FeatureImportance(
     rf_model_paper.feature_importances_, X_train.columns, 
@@ -150,6 +171,23 @@ print(
 # ==========
 # 4.训练XGBoost回归模型
 # ==========
+# Warning: This is a very long process.
+# # XGB_Regressor网格搜索
+# from xgboost import XGBRegressor
+# from sklearn.model_selection import GridSearchCV
+# param_grid_xgb_regressor = {
+#     "n_estimators": [100, 200, 300],
+#     "max_depth": [6, 7, 8],
+#     "learning_rate": [0.1, 0.2, 0.3],
+#     "objective": ["reg:squarederror", "reg:gamma"],
+# }
+# xgb_grid_regressor = GridSearchCV(
+#     estimator=XGBRegressor(), param_grid=param_grid_xgb_regressor, 
+#     cv=5, n_jobs=-1
+# )
+# xgb_grid_regressor.fit(X_train, y_train)
+# print(xgb_grid_regressor.best_params_)
+
 print("=" * 50)
 print("4.训练XGBoost回归模型")
 print("=" * 50)
@@ -165,6 +203,9 @@ y_pred = xgb_model_paper_best.predict(X_test_top30)
 
 print("MSE(XGBRegressor):", mean_squared_error(y_test, y_pred))
 print("R2(XGBRegressor):", r2_score(y_test, y_pred))
+
+# 保存模型
+ModelsIO.saveModel(xgb_model_paper_best, "xgb_regressor_paper.pkl")
 
 FeatureImportance(
     xgb_model_paper_best.feature_importances_, X_train_top30.columns, 
@@ -221,6 +262,23 @@ X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.3, random_state=42, stratify=y
 )
 
+# Warning: This is a very long process.
+# # XGB_Classifier网格搜索
+# from xgboost import XGBClassifier
+# from sklearn.model_selection import GridSearchCV
+# param_grid_xgb_classifier = {
+#     "n_estimators": [100, 200, 300],
+#     "max_depth": [6, 7, 8],
+#     "learning_rate": [0.1, 0.2, 0.3],
+#     "eval_metric": ["auc", "error", "logloss"]
+# }
+# xgb_grid_classifier = GridSearchCV(
+#     estimator=XGBClassifier(), param_grid=param_grid_xgb_classifier,
+#     cv=5, n_jobs=-1
+# )
+# xgb_grid_classifier.fit(X_train, y_train)
+# print(xgb_grid_classifier.best_params_)
+
 # 训练模型
 clf_xgb = XGBClassifier(
     # n_estimators=200, max_depth=7, learning_rate=0.3, 
@@ -234,6 +292,9 @@ clf_xgb.fit(X_train, y_train)
 y_pred = clf_xgb.predict(X_test)
 y_score = clf_xgb.predict_proba(X_test)
 print("\nClassification Report: \n", classification_report(y_test, y_pred))
+
+# 保存模型
+ModelsIO.saveModel(clf_xgb, "xgb_classifier_paper.pkl")
 
 # 可视化混淆矩阵
 label_mapping = {0: "Low House Price", 1: "High House Price"}
