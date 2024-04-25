@@ -21,7 +21,6 @@ from src.common.locTool.lnglat import GetLongitudeLatitude
 class HousingDataParser:
 
     """
-    TODO：添加：解析进度条
     封装一个数据解析类，用于解析爬取网页的html文件
     """
 
