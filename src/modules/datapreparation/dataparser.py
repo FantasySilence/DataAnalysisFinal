@@ -56,20 +56,20 @@ class HousingDataParser:
         self._parse_data()
         self._parse_loc_to_lnglat()
 
-        # # ------ 创建存放数据的文件夹 ------ #
-        # folder_name = "rowdata"
-        # data_folder = os.path.join(FilesIO.getDataset(), folder_name)
-        # if not os.path.exists(data_folder):
-        #     os.mkdir(data_folder)
-        # else:
-        #     pass
+        # ------ 创建存放数据的文件夹 ------ #
+        folder_name = "rowdata"
+        data_folder = os.path.join(FilesIO.getDataset(), folder_name)
+        if not os.path.exists(data_folder):
+            os.mkdir(data_folder)
+        else:
+            pass
 
-        # # ------ 存入csv文件中 ------ #
-        # self.df.to_csv(
-        #     FilesIO.getDataset(
-        #         "%s/%s_housing_data.csv" % (folder_name, self.city)
-        #     ), index=False, encoding="utf-8-sig"
-        # )
+        # ------ 存入csv文件中 ------ #
+        self.df.to_csv(
+            FilesIO.getDataset(
+                "%s/%s_housing_data.csv" % (folder_name, self.city)
+            ), index=False, encoding="utf-8-sig"
+        )
     
 
     def _parse_data(self) -> None:
