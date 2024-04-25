@@ -62,7 +62,7 @@ class ConfusionMatrix(EvaluateObjectBase):
                 nrows=1, ncols=1, figsize=(10, 8), dpi=80, facecolor="w"
             )
         clf_matrix = confusion_matrix(self.y_true, self.y_pred)
-        print("混淆矩阵:\n", clf_matrix)
+        print("Confusion Matrix:\n", clf_matrix)
         sns.heatmap(
             clf_matrix, annot=True, fmt=".1f", ax=self.ax,
             linewidths=.5, square = True, cmap = 'Blues',
