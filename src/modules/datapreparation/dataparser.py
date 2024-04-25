@@ -21,11 +21,11 @@ from src.common.locTool.lnglat import GetLongitudeLatitude
 class HousingDataParser:
 
     """
-    TODO：添加：后续应该会解析更多的信息
+    TODO：添加：解析进度条
     封装一个数据解析类，用于解析爬取网页的html文件
     """
 
-    def __init__(self, city: str=None, parse_more: bool=False) -> None:
+    def __init__(self, city: str=None) -> None:
 
         """
         city: 待解析数据的城市名称，如北京(city="BJ")
@@ -57,20 +57,20 @@ class HousingDataParser:
         self._parse_data()
         self._parse_loc_to_lnglat()
 
-        # ------ 创建存放数据的文件夹 ------ #
-        folder_name = "rowdata"
-        data_folder = os.path.join(FilesIO.getDataset(), folder_name)
-        if not os.path.exists(data_folder):
-            os.mkdir(data_folder)
-        else:
-            pass
+        # # ------ 创建存放数据的文件夹 ------ #
+        # folder_name = "rowdata"
+        # data_folder = os.path.join(FilesIO.getDataset(), folder_name)
+        # if not os.path.exists(data_folder):
+        #     os.mkdir(data_folder)
+        # else:
+        #     pass
 
-        # ------ 存入csv文件中 ------ #
-        self.df.to_csv(
-            FilesIO.getDataset(
-                "%s/%s_housing_data.csv" % (folder_name, self.city)
-            ), index=False, encoding="utf-8-sig"
-        )
+        # # ------ 存入csv文件中 ------ #
+        # self.df.to_csv(
+        #     FilesIO.getDataset(
+        #         "%s/%s_housing_data.csv" % (folder_name, self.city)
+        #     ), index=False, encoding="utf-8-sig"
+        # )
     
 
     def _parse_data(self) -> None:
@@ -79,11 +79,12 @@ class HousingDataParser:
         解析html文件，并将信息存储到列表中
         """
 
-        for i in range(1, 51):
+        print("Parsing data...")
+        for j in range(1, 51):
 
             # ------ 读取并解析html文件 ------ #
             path = FilesIO.getHTMLtext(
-                "%s_htmls/%s_page_%d.html" % (self.city, self.city, i)
+                "%s_htmls/%s_page_%d.html" % (self.city, self.city, j)
             )
 
             parser = etree.HTMLParser(encoding="utf-8")
@@ -148,6 +149,13 @@ class HousingDataParser:
             ]
             self.house_age_list.extend(house_age_list)
 
+            # ------ 解析进度 ------ #
+            print(
+                "Parsing...", 
+                f'|{"■" * ((j + 1) * 50 // 51):50}|', 
+                f'{(j + 1) * 100 // 51}%', end='\r'
+            )
+
         # ------ 临时存入DataFrame, 用于去重 ------ #
         self.df = pd.DataFrame({
             "houseLoc": self.house_loc_list, "unitPrice": self.unit_price_list, 
@@ -156,6 +164,7 @@ class HousingDataParser:
             "houseOrientation": self.house_orientation_list, "houseAge": self.house_age_list, 
         })
         self.df.drop_duplicates(inplace=True, subset=["houseLoc"], keep="first")
+        print("\nParsing complete...")
             
     
     def _parse_loc_to_lnglat(self):
@@ -164,19 +173,28 @@ class HousingDataParser:
         将房屋的地址信息转换为经纬度
         """
 
+        print("Parsing location to longitude and latitude...")
         # ------ 转换 ------ #
-        for loc in self.df["houseLoc"].tolist():
+        for i in range(len(self.df["houseLoc"].tolist())):
             lnglat = GetLongitudeLatitude(
-                city=CONST_TABLE["CITY"][self.city], address=loc
+                city=CONST_TABLE["CITY"][self.city], 
+                address=self.df["houseLoc"].tolist()[i]
             )
-            print(lnglat.longtitude, lnglat.latitude)
             self.longitude_list.append(lnglat.longtitude)
             self.latitude_list.append(lnglat.latitude)
+            
+            # ------ 解析进度 ------ #
+            print(
+                "Parsing...", 
+                f'|{"■" * ((i + 1) * 50 // len(self.df["houseLoc"].tolist())):50}|', 
+                f'{(i + 1) * 100 // len(self.df["houseLoc"].tolist())}%', end='\r'
+            )
         
         # ------ 生成最终的DataFrame ------ #
         self.df.insert(1, "longitude", self.longitude_list)
         self.df.insert(2, "latitude", self.latitude_list)
         self.df.insert(0, "ID", range(1, len(self.df) + 1))
+        print("\nParsing complete...")
     
 
     @staticmethod
@@ -198,10 +216,12 @@ class HousingDataParser:
         house_floor_sum_list = []       # 存储房子所在楼层总数
         house_housing_period_list = []  # 存储房子房本年限
 
-        for i in range(1, 51):
+        print("Parsing more data...")
+        for j in range(1, 51):
+
             # ------ 重新读取html文件 ------ #
             path = FilesIO.getHTMLtext(
-                "%s_htmls/%s_page_%d.html" % (city, city, i)
+                "%s_htmls/%s_page_%d.html" % (city, city, j)
             )
 
             # ------ 解析存储信息的div标签 ------ #
@@ -257,7 +277,6 @@ class HousingDataParser:
                 for text in ps:
                     sub_info_list.append("".join(text.split()))
                 info_list.append(sub_info_list)
-            
 
             for item in info_list:
                 try:
@@ -277,6 +296,13 @@ class HousingDataParser:
                 except IndexError:
                     house_floor_type_list.append(np.nan)
                     house_floor_sum_list.append(np.nan)
+            
+            # ------ 解析进度 ------ #
+            print(
+                "Parsing...", 
+                f'|{"■" * ((j + 1) * 50 // 51):50}|', 
+                f'{(j + 1) * 100 // 51}%', end='\r'
+            )
         
         # ------ 与data合并重新储存 ------ #
         # 临时创建DataFrame存储
@@ -294,4 +320,5 @@ class HousingDataParser:
             FilesIO.getDataset("%s_housing_data.csv" % city), 
             index=False, encoding="utf-8-sig"
         )
+        print("\nParsing complete...")
         
