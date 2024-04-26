@@ -100,7 +100,7 @@ class PipeLineFor58HousingData(BaseEstimator, TransformerMixin):
         X_df_dummy = pd.get_dummies(X_df[dummy_attribs], drop_first=True)
         target = X_df["unitPrice"]
         X_df.drop(
-            dummy_attribs + ["unitPrice", "longitude", "latitude"], 
+            dummy_attribs + ["unitPrice"], 
             axis=1, inplace=True
         )
         X_df = pd.concat([X_df, X_df_dummy], axis=1)
