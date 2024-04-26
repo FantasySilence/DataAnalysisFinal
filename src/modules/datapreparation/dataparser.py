@@ -57,7 +57,7 @@ class HousingDataParser:
         self._parse_loc_to_lnglat()
 
         # ------ 创建存放数据的文件夹 ------ #
-        folder_name = "rowdata"
+        folder_name = "row_data"
         data_folder = os.path.join(FilesIO.getDataset(), folder_name)
         if not os.path.exists(data_folder):
             os.mkdir(data_folder)

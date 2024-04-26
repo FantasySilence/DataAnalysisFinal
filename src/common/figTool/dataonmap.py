@@ -23,7 +23,7 @@ def map_plot(city: str, is_show: bool = True) -> None:
     """
 
     # ------ 读取对应的城市房价数据 ------ #
-    data = pd.read_csv(FilesIO.getDataset("%s_housing_data.csv" % city))
+    data = pd.read_csv(FilesIO.getDataset("row_data/%s_housing_data.csv" % city))
 
     # ------ 获取上四分位数，下四分位数 ------ #
     quantiles = data["unitPrice"].quantile([0.25, 0.75])
