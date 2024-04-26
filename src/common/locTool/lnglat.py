@@ -26,6 +26,7 @@ class GetLongitudeLatitude:
         """
 
         self.url = "https://api.map.baidu.com/geocoding/v3"
+        # 这里的ak密钥只是一个示例，请自行替换...
         self.ak = "Z5CdwnD18hEKQcHgEgBiGvFYlnrOqGWC"
         self.city = city
         self.address = address
