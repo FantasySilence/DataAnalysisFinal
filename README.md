@@ -4,6 +4,8 @@
 ### 一、Setup
 
 > 非常建议使用vscode打开本项目，不过得确定你已经在vscode中配置好Python以及Jupyter notebook的环境
+>
+> Python版本为3.9.7
 
 1.(如果有git的话)打开Git Bash，输入`git clone git@github.com:FantasySilence/DataAnalysisFinal.git`，获取项目源代码。
 
@@ -26,6 +28,16 @@
 6.等观察到Successfully...字样时，就可以愉快的运行啦\o/。
 
 ![setup_5.png](README_img/setup_5.png)
+
+### 二、注意事项
+
+#### 1. 数据的获取
+
+数据的获取使用到了爬虫，请确保网络连接正确以及及时输入验证码避免反爬虫。
+
+#### 2. 数据解析部分
+
+数据解析部分使用了百度地图开发者API用于将门牌地址转换为经纬度坐标，请自行按照百度地图开发者API的[文档](https://lbsyun.baidu.com/faq/api?title=webapi/guide/webservice-geocoding)，生成应用，并修改[这里](src/common/locTool/lnglat.py)的ak密钥，程序中给出的密钥只是一个示例无法运行。
 
 ### 技术栈
 
