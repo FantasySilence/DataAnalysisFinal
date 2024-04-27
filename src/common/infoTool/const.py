@@ -7,6 +7,8 @@
 # @Description:                                           #
 # This module stores some commonly used constants         #
 # ======================================================= #
+# 这里的ak密钥只是一个示例，请自行替换...
+AK_KEY = "Z5CdwnD18hEKQcHgEgBiGvFYlnrOqGWC"
 
 CONST_TABLE = {
     # ------ 全国12座城市的二手房数据url, 每个有50页数据 ------ #
@@ -45,10 +47,13 @@ CONST_TABLE = {
         # 用于解析每平方米价格的xpath表达式
         "UNIT_PRICE": "//div[@class='property']//div[2]/div[2]/p[2]/text()",
 
-        # 用于解析房间数量的xpath表达式
-        "HOUSE_ROOM_NUM": "//div[@class='property']//div[2]//section//p[1]/span/text()",
+        # 用于解析卫生间数量(卫)的xpath表达式
+        "HOUSE_BATHROOM_NUM": "//div[@class='property']//div[2]//section//p[1]/span[5]/text()",
 
-        # 用于解析卧室数量的xpath表达式
+        # 用于解析客厅数量(厅)的xpath表达式
+        "HOUSE_LIVINGROOM_NUM": "//div[@class='property']//div[2]//section//p[1]/span[3]/text()",
+
+        # 用于解析卧室数量(室)的xpath表达式
         "HOUSE_BEDROOM_NUM": "//div[@class='property']//div[2]//section//p[1]/span[1]/text()",
 
         # 用于解析朝向的xpath表达式
