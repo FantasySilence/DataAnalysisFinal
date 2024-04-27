@@ -8,6 +8,8 @@
 # ========================================================================== #
 import requests
 
+from src.common.infoTool.const import AK_KEY
+
 
 class POICollector:
 
@@ -27,8 +29,7 @@ class POICollector:
         """
 
         self.url = "https://api.map.baidu.com/place/v2/search"
-        # 这里的ak密钥只是一个示例，请自行替换...
-        self.ak = "Z5CdwnD18hEKQcHgEgBiGvFYlnrOqGWC"
+        self.ak = AK_KEY
         self.query = query
         self.location = f"{lat},{lng}"
         self.radius = radius

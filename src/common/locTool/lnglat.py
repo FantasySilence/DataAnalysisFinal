@@ -10,6 +10,7 @@
 # ======================================================== #
 import requests
 
+from src.common.infoTool.const import AK_KEY
 from src.common.locTool.coordutils import CoordTransformer
 
 
@@ -26,8 +27,7 @@ class GetLongitudeLatitude:
         """
 
         self.url = "https://api.map.baidu.com/geocoding/v3"
-        # 这里的ak密钥只是一个示例，请自行替换...
-        self.ak = "Z5CdwnD18hEKQcHgEgBiGvFYlnrOqGWC"
+        self.ak = AK_KEY
         self.city = city
         self.address = address
         self.longtitude = None
