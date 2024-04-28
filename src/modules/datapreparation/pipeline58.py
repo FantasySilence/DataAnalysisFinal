@@ -104,8 +104,7 @@ class PipeLineFor58HousingData(BaseEstimator, TransformerMixin):
         target = X_df["unitPrice"]
         X_df.drop(
             dummy_attribs + [
-                "unitPrice", "longitude", "latitude", 
-                "busAround", "shopping_mallAround", "houseSubway"
+                "unitPrice", "longitude", "latitude", "houseSubway"
             ], 
             axis=1, inplace=True
         )
