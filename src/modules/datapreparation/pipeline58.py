@@ -45,6 +45,21 @@ class PipeLineFor58HousingData(BaseEstimator, TransformerMixin):
 
     def transform(self, X: pd.DataFrame) -> pd.DataFrame:
 
+        # ------ 第〇步，分离各个类别 ------ #
+        dummy_attribs = [
+            "houseOrientation", "houseHousingPeriod", "houseFloorType"
+        ]
+        num_attribs = [
+            "longitude", "latitude", "houseArea", "houseAge", 
+            "houseFloorSum", "distance"
+        ]
+        cat_attribs = [
+            "houseBedroom", "houseBathroom", "houseLivingRoom", 
+            "houseSubway", "busAround", "shopping_mallAround", 
+            "parkAround", "subwayAround", "schoolAround"
+        ]
+        log_attribs = ["unitPrice"]
+
         # ------ 第一步，数据清洗与特征工程 ------ #
         pipeline_step_1 = Pipeline([
             # 计算并添加距离市中心的距离
@@ -71,18 +86,6 @@ class PipeLineFor58HousingData(BaseEstimator, TransformerMixin):
             ("ordinal_encoder", OrdinalEncoder()),
         ])      # 分类变量处理
 
-        dummy_attribs = [
-            "houseOrientation", "houseHousingPeriod", "houseFloorType"
-        ]
-        num_attribs = [
-            "longitude", "latitude", "houseArea", "houseAge", 
-            "houseFloorSum", "distance"
-        ]
-        cat_attribs = [
-            "houseBedroom", "houseRoom", "houseSubway"
-        ]
-        log_attribs = ["unitPrice"]
-
         # ------ 第三步，整合为一个管道 ------ #
         pipeline_step_2 = ColumnTransformer([
             ("num", num_pipeline, num_attribs),
@@ -100,7 +103,10 @@ class PipeLineFor58HousingData(BaseEstimator, TransformerMixin):
         X_df_dummy = pd.get_dummies(X_df[dummy_attribs], drop_first=True)
         target = X_df["unitPrice"]
         X_df.drop(
-            dummy_attribs + ["unitPrice"], 
+            dummy_attribs + [
+                "unitPrice", "longitude", "latitude", 
+                "busAround", "shopping_mallAround", "houseSubway"
+            ], 
             axis=1, inplace=True
         )
         X_df = pd.concat([X_df, X_df_dummy], axis=1)
