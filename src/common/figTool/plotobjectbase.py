@@ -30,7 +30,9 @@ class PlotObjectBase:
         if city is None or type(city) != str:
             print("ERROR: Inappropriate input of city name...")
             exit(1)
-        elif city not in list(CONST_TABLE["CITY"].keys()):
+        elif city not in list(CONST_TABLE["CITY"].keys()) or\
+             city not in list(CONST_TABLE["URL"].keys()) or\
+             city not in list(CONST_TABLE["CITY_CENTER"].keys()):
             print("ERROR: City name not included, please add it in const.py")
             exit(1)
         else:
