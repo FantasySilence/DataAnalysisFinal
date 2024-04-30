@@ -1,3 +1,11 @@
+# ========================================================== #
+# @Author: Fantasy_Silence                                   #
+# @Time: 2024-04-30                                          #
+# @IDE: Visual Studio Code & PyCharm                         #
+# @Python: 3.9.7                                             #
+# ========================================================== #
+# @Description: Draw correlation between target variables    #
+# ========================================================== #
 import matplotlib
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -24,6 +32,10 @@ class DrawVariblesRelativityWithTarget(PlotObjectBase):
 
         """
         绘制相关性图
+        is_show：是否显示
+        is_show_alone：是否显示于单独的画布上. 如果想单独显示，设置为True，如果想作为子图
+                       与其他图片一起显示，自行设置画布(至少1x1)并将该参数设置为False
+        is_save：是否以png格式保存图片，设置为True将保存于项目根路径下的figures文件夹中
         """
 
         if self.data is None:
@@ -33,10 +45,10 @@ class DrawVariblesRelativityWithTarget(PlotObjectBase):
         data = pd.get_dummies(data, drop_first=True, dtype=int)
         if is_show_alone:
             _, ax = plt.subplots(figsize=(12, 8), dpi=80, facecolor="w")
-        data.corr()["housePrice"].sort_values(ascending=False).plot(
+        data.corr()["unitPrice"].sort_values(ascending=False).plot(
             kind="barh", ax=ax, color="skyblue"
         )
-        ax.vlines(x=0, ymin=0, ymax=len(data.corr()["housePrice"]),
+        ax.vlines(x=0, ymin=0, ymax=len(data.corr()["unitPrice"]),
                    color="lightskyblue", linestyles="dashed")
         ax.set_xlabel("相关性", fontsize=14)
         ax.set_title(
