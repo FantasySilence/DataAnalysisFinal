@@ -15,9 +15,6 @@ from src.modules.datapreparation.dataparser import HousingDataParser
 from src.modules.datapreparation.datacrawler import HousingDataSpider
 from src.modules.visualization.geo_distribute import DrawGeoDistribution
 from src.common.infoTool.randomIPandHeaders import RandomRequestInfoGenerator
-from src.modules.visualization.house_characteristics import DrawCharacteristicsOfHouse
-from src.modules.visualization.age_price_relation import DrawRelationBetweenAgeAndPrice
-from src.modules.visualization.price_area_relation import DrawRelationBetweenPriceAndArea
 
 
 # ================
@@ -46,46 +43,6 @@ print("=" * 50)
 print("1.数据可视化")
 print("=" * 50)
 start_time = time.time()
-
-# 图1(一些特征的分布)
-fig, axes = plt.subplots(4, 4, figsize=(16, 16), dpi=100)
-DrawCharacteristicsOfHouse(city="CD").draw(
-    is_show=False, is_show_alone=False, is_save=False, axes=axes[:2, :2]
-)
-DrawCharacteristicsOfHouse(city="BJ").draw(
-    is_show=False, is_show_alone=False, is_save=False, axes=axes[2:, :2]
-)
-DrawCharacteristicsOfHouse(city="SH").draw(
-    is_show=False, is_show_alone=False, is_save=False, axes=axes[:2, 2:]
-)
-DrawCharacteristicsOfHouse(city="GZ").draw(
-    is_show=False, is_show_alone=False, is_save=False, axes=axes[2:, 2:]
-)
-plt.tight_layout()
-
-# 图2(地理分布图)
-fig, axes = plt.subplots(2, 2, figsize=(20, 16), dpi=100)
-DrawGeoDistribution(city="CD").draw(
-    is_show=False, is_show_alone=False, is_save=False, ax=axes[0, 0]
-)
-DrawGeoDistribution(city="BJ").draw(
-    is_show=False, is_show_alone=False, is_save=False, ax=axes[0, 1]
-)
-DrawGeoDistribution(city="SH").draw(
-    is_show=False, is_show_alone=False, is_save=False, ax=axes[1, 0]
-)
-DrawGeoDistribution(city="GZ").draw(
-    is_show=False, is_show_alone=False, is_save=False, ax=axes[1, 1]
-)
-plt.tight_layout()
-plt.show()
-
-# 为地理分布图添加地图
-cities = ["BJ", "CD", "SH", "GZ"]
-for city in cities:
-    DrawGeoDistribution(city=city).draw(
-        is_show=False, is_save=False, is_map_show=True
-    )
 
 end_time = time.time()
 print(
