@@ -11,6 +11,7 @@ import os
 import numpy as np
 import pandas as pd
 from lxml import etree
+from threading import Thread
 
 from src.common.fileTool.filesio import FilesIO
 from src.common.infoTool.const import CONST_TABLE
@@ -34,7 +35,9 @@ class HousingDataParser:
         if city is None or type(city) != str:
             print("ERROR: Inappropriate input of city name...")
             exit(1)
-        elif city not in list(CONST_TABLE["CITY"].keys()):
+        elif city not in list(CONST_TABLE["CITY"].keys()) or\
+             city not in list(CONST_TABLE["URL"].keys()) or\
+             city not in list(CONST_TABLE["CITY_CENTER"].keys()):
             print("ERROR: City name not included, please add it in const.py")
             exit(1)
         else:
@@ -65,11 +68,21 @@ class HousingDataParser:
         # ------ 提取 ------ #
         self._parse_data()
         self._parse_loc_to_lnglat()
-        self._parse_bus_around()
-        self._parse_school_around()
-        self._parse_park_around()
-        self._parse_shopping_mall_around()
-        self._parse_subway_around()
+ 
+        # ------ 使用多线程解析数据 ------ #
+        # 创建线程
+        thread_school = Thread(target=self._parse_school_around)
+        thread_subway = Thread(target=self._parse_subway_around)
+        thread_park = Thread(target=self._parse_park_around)
+        thread_shopping_mall = Thread(target=self._parse_shopping_mall_around)
+        thread_bus = Thread(target=self._parse_bus_around)
+        # 启动线程
+        thread_school.start(); thread_subway.start(); thread_park.start()
+        thread_shopping_mall.start(); thread_bus.start()
+        # 等待所有线程执行完毕
+        thread_school.join(); thread_subway.join(); thread_park.join()
+        thread_shopping_mall.join(); thread_bus.join()
+        print("All data parsed...")
 
         # ------ 创建存放数据的文件夹 ------ #
         folder_name = "row_data"
