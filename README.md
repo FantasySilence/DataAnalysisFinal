@@ -37,7 +37,7 @@
 
 #### 2. 数据解析部分
 
-数据解析部分使用了百度地图开发者API用于将门牌地址转换为经纬度坐标，请自行按照百度地图开发者API的[文档](https://lbsyun.baidu.com/faq/api?title=webapi/guide/webservice-geocoding)，生成应用，并修改[这里](src/common/locTool/lnglat.py)的ak密钥，程序中给出的密钥只是一个示例无法运行。
+数据解析部分使用了百度地图开发者API用于将门牌地址转换为经纬度坐标以及地点检索，请自行按照百度地图开发者API中的[地理编码](https://lbsyun.baidu.com/faq/api?title=webapi/guide/webservice-geocoding)和[地点检索](https://lbsyun.baidu.com/faq/api?title=webapi/guide/webservice-placeapi)，生成应用，并修改[这里](src/common/infoTool/const.py)的ak密钥，程序中给出的密钥只是一个示例无法运行。
 
 ### 技术栈
 
