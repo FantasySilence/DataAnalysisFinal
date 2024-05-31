@@ -26,6 +26,7 @@ from src.modules.evaluation.pr_tradeoff import PRTradeOffCurve
 from src.modules.evaluation.learning_curve import LearningCurve
 from src.modules.evaluation.confusion_matrix import ConfusionMatrix
 from src.modules.evaluation.feature_importance import FeatureImportance
+from src.modules.visualization.target_in_paper import DrawTargetInPaper
 from src.modules.datapreparation.pipelinepaper import PipeLineForPaperHousingData
 
 # ==========
@@ -58,10 +59,10 @@ print(
 )
 
 # ==========
-# 1.计算文中提到的相关系数
+# 1.计算文中提到的相关系数并绘制目标变量分布
 # ==========
 print("=" * 50)
-print("1.计算文中提到的相关系数")
+print("1.计算文中提到的相关系数并绘制目标变量分布")
 print("=" * 50)
 start_time = time.time()
 data_processed = PipeLineForPaperHousingData(is_drop=False).transform(row_data)
@@ -89,9 +90,11 @@ print(
         ["Exterior1st", "Exterior2nd", "GarageCond", "GarageQual", "SalePrice"]
     ].corr(method="spearman")["SalePrice"], end="\n\n"
 )
+# 绘制目标变量分布情况
+DrawTargetInPaper.draw(is_show=True, is_save=True)
 end_time = time.time()
 print(
-    "完成'计算文中提到的相关系数', 用时%.3fms" % 
+    "完成'计算文中提到的相关系数并绘制目标变量分布', 用时%.3fms" % 
     ((end_time - start_time) * 1000), end="\n\n"
 )
 
