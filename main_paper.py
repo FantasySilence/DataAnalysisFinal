@@ -137,7 +137,7 @@ ModelsIO.saveModel(rf_model_paper, "rf_regressor_paper.pkl")
 
 FeatureImportance(
     rf_model_paper.feature_importances_, X_train.columns, 
-    is_save=False
+    is_save=True, fig_name="RF_feature_importance_paper.png"
 )
 top30 = list(X_train.columns[
     rf_model_paper.feature_importances_.argsort()[-30:][::-1]
@@ -212,7 +212,7 @@ ModelsIO.saveModel(xgb_model_paper_best, "xgb_regressor_paper.pkl")
 
 FeatureImportance(
     xgb_model_paper_best.feature_importances_, X_train_top30.columns, 
-    is_save=False
+    is_save=True, fig_name="XGB_feature_importance_paper.png"
 )
 end_time = time.time()
 print(
@@ -304,10 +304,13 @@ label_mapping = {0: "Low House Price", 1: "High House Price"}
 ConfusionMatrix(y_test, y_pred, label_map=list(label_mapping.values()))
 
 # 绘制出特征重要性
-FeatureImportance(clf_xgb.feature_importances_, X_train.columns)
+FeatureImportance(
+    clf_xgb.feature_importances_, X_train.columns, 
+    is_save=True, fig_name="XGB_feature_importance_paper_cls.png"
+)
 
 # 绘制Precision和Recall曲线
-PRTradeOffCurve(y_test, y_score)
+PRTradeOffCurve(y_test, y_score, is_save=True, fig_name="XGB_PR_paper.png")
 
 # 绘制学习曲线
 cv = ShuffleSplit(n_splits=10, test_size=0.3, random_state=42)
